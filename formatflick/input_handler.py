@@ -26,7 +26,7 @@ class input_handler:
     def validate_extention(self,extension):
         try:
             assert type(extension) == str
-        except TypeError as err:
+        except AssertionError as err:
             raise Exception(f"Exception occured {err}")
         
         extension = "."+extension.lower()
