@@ -20,13 +20,17 @@ class jason_handler(handler):
     def is_valid_format(self):
         print(self.content)
         try:
-            json.loads(self.content)
+            self.content=json.loads(self.content)
             return True
         except json.JSONDecodeError as err:
             raise Exception(f"Error occured during reading json file {err}")
     
     def flatten_json(self):
-        flattened_json = flatten_json_util(self.content,'','_')
+        flattened_json = flatten_json_util(self.content,'','.')
+        print(flattened_json)
+
 # if __name__=="__main__":
 #     obj = jason_handler("thanks.json")
 #     obj.is_valid_format()
+
+#     obj.flatten_json()
