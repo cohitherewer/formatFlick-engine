@@ -1,5 +1,6 @@
 class handler:
     def __init__(self, file_path):
+        """generic class format for file format"""
         self.file_path = file_path
         self.content = self.file_content()
 
