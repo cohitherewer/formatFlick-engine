@@ -5,6 +5,7 @@ Takes two files and checks its the valid extention or not
 import os
 
 class input_handler:
+    """handles incoming input"""
     def __init__(self,*args, **kwargs) -> None:
         # self.file_path1 = file_path1
         # self.file_path2 = file_path2
@@ -24,8 +25,9 @@ class input_handler:
         return file_extension.lower()
     
     def validate_extention(self,extension):
+        """validating extention"""
         try:
-            assert type(extension) == str
+            assert isinstance(extension) == str
         except AssertionError as err:
             raise Exception(f"Exception occured {err}")
         
@@ -36,6 +38,7 @@ class input_handler:
     
     @staticmethod
     def create_new_file(dest_file,extension):
+        """create new file using destination file name and extension"""
         try:
             file_path = os.path.join(os.getcwd(),dest_file+extension)
             with open(file_path,"w") as dest:
