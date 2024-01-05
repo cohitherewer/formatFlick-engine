@@ -12,7 +12,7 @@ def flatten_json_util(json_data, parent_key='',sep='_'):
             flattened_dict[new_key] = value
     return flattened_dict
 
-class jason_handler(handler):
+class json_handler(handler):
     """handles json file format"""
     def __init__(self, file_path):
         super().__init__(file_path)
