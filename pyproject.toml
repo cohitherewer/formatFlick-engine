@@ -4,9 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "formatflick"
-version = "0.1.0"
 description = "Python module for interchanging file formats"
-url = "https://github.com/cohitherewer/formatFlick-engine"
 authors = [{name="Abhinaba Chakraborty",email="abhinabacr4@gmail.com"}]
 maintainers = [
   {name = "Abhinaba Chakraborty", email = "brett@example.com"}
@@ -14,6 +12,7 @@ maintainers = [
 readme = "README.md"
 license = {file="BSD 3-clause"}
 dynamic = ["version"]
+#version = "1.0.0"
 dependencies = [
   "pandas"
 ]
@@ -23,16 +22,3 @@ classifiers = [
 ]
 requires-python = ">=3.6"
 keywords = ["json", "csv", "xml", "format", "python3"]
-
-[project.urls]
-HHomepage = "https://example.com"
-Documentation = "https://readthedocs.org"
-Repository = "https://github.com/me/spam.git"
-Issues = "https://github.com/me/spam/issues"
-Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
-
-[project.scripts]
-
-[project.gui-scripts]
-
-[project.entry-points."spam.magical"]
