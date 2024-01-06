@@ -47,3 +47,12 @@ def validate_xml(source):
         return True, ET.parse(source)
     except Exception as err:
         return False, err
+
+
+def create_file(file_path):
+    try:
+        with open(file_path) as file:
+            file.close()
+        return True, file_path
+    except Exception as err:
+        return False, err
