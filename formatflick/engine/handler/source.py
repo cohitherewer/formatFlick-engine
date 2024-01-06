@@ -57,11 +57,12 @@ class Sourcefile_handler:
         """
         Validate the extension
         """
-        log.info("Validating the File Extension")
+        log.info("Validating the File Extension of Source File")
         if util.validate_extension(self.extension):
             log.info("Valid File Extension")
         else:
             log.error(f"{self.extension} is not a valid File Extension")
+            raise Exception(f"{self.extension} is not a valid File Extension")
 
     def is_exists(self):
         """
