@@ -17,10 +17,13 @@ class Sourcefile_handler:
     def __init__(self, source):
         self.source = source
         self.is_exists()
-        self.source_file = self.get_file_name()
-        self.extension = self.get_extension()
 
-        self.valid_extension = [".xml", ".csv", ".json"]
+        self.source_file = None
+        self.get_file_name()
+
+        self.extension = None
+        self.get_extension()
+
         self.validate_extension()
 
         self.object = None
@@ -31,27 +34,31 @@ class Sourcefile_handler:
         Get the file name
         """
         log.info("Getting the File Name...")
-        try:
-            return os.path.basename(self.source)
-        except Exception as err:
-            log.error(f"Error occurred while extracting File Name: {err}")
+        u, v = util.get_file_name(self.source)
+        if u:
+            self.source_file = v
+        else:
+            log.error(f"Error occurred while extracting File Name: {v}", exc_info=False)
+            raise Exception(f"Error while extracting file name from file path {self.source}: {v}")
 
     def get_extension(self):
         """
         Get the file extension
         """
         log.info("Getting the extension")
-        try:
-            return os.path.splitext(self.source_file)[1]
-        except Exception as err:
-            log.error(f"Error occurred while getting File Extension: {err}")
+        u, v = util.get_extension(self.source_file)
+        if u:
+            self.extension = v
+        else:
+            log.error(f"Error occurred while getting File Extension: {v}")
+            raise Exception(f"Error while extracting file extension from {self.source_file}: {v}")
 
     def validate_extension(self):
         """
         Validate the extension
         """
-        log.info("Validating the File Extention")
-        if self.extension in self.valid_extension:
+        log.info("Validating the File Extension")
+        if util.validate_extension(self.extension):
             log.info("Valid File Extension")
         else:
             log.error(f"{self.extension} is not a valid File Extension")
@@ -70,14 +77,23 @@ class Sourcefile_handler:
         if self.extension == ".json":
             log.info("Validating the JSON Encoding...")
             u, v = util.validate_json(self.source)
-            if u is True:
+            if u:
                 log.info("JSON Encoding Validated")
                 self.object = v.copy()
             else:
                 log.error("Problem in JSON Encoding")
                 raise Exception(f"Problem in JSON Encoding: {v}")
+
         elif self.extension == ".xml":
-            pass
+            log.infor("Validating the XML Encoding")
+            u, v = util.validate_xml(self.source)
+            if u:
+                log.info("XML Encoding Validated")
+                self.object = v.getroot()
+            else:
+                log.error("Problem in XML Encoding")
+                raise Exception(f"Problem in XML Encoding: {v}")
+
         elif self.extension == ".csv":
             log.info("Skipping the File Validation for CSV")
             self.object = pd.read_csv(self.source)

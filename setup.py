@@ -9,7 +9,7 @@ setup(
     author_email='abhinabacr4@gmail.com',
     license='BSD 3-clause',
     packages=['formatflick'],
-    install_requires=[],
+    install_requires=['pandas'],
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
