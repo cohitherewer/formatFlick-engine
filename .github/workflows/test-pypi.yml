@@ -23,6 +23,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
 
+    - name: Bump version (example using bump2version)
+      run: |
+        pip install bump2version
+        bump2version patch/
+
     - name: Build and publish to TEST PyPI
       env:
         TWINE_USERNAME: __token__
