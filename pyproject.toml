@@ -11,8 +11,8 @@ maintainers = [
 ]
 readme = "README.md"
 license = {file="LICENSE"}
-#dynamic = ["version"]
-version = "0.0.2"
+dynamic = ["version", "description"]
+#version = "0.0.2"
 dependencies = [
   "pandas","dynamic-versioning"
 ]
