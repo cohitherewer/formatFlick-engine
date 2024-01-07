@@ -22,4 +22,5 @@ jobs:
 
       - name: Unit Testing
         run: |
-          python3 -m unittest discover -s tests
+          python3 -m unittest discover
+        working-directory: ${{ github.workspace }}
