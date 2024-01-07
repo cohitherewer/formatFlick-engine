@@ -22,6 +22,6 @@ jobs:
 
       - name: Unit Testing
         run: |
-          cd ..
+          cd formatflick
           python -m unittest discover -p 'test_*.py'
         working-directory: ${{ github.workspace }}
