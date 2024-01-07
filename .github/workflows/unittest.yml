@@ -24,8 +24,5 @@ jobs:
         run: |
           export PYTHONPATH=$PYTHONPATH:$(pwd)/tests
           echo "${{ github.workspace }}"
-          cd ..
-#          ls
-          python -m unittest
-#          cd ../
-#          echo "${{ github.workspace }}"
+          ls
+#          python -m unittest discover
