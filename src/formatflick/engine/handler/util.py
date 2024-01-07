@@ -51,8 +51,8 @@ def validate_xml(source):
 
 def create_file(file_path):
     try:
-        with open(file_path) as file:
-            file.close()
+        with open(file_path,'w') as file:
+            pass
         return True, file_path
     except Exception as err:
         return False, err

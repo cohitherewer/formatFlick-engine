@@ -1,7 +1,7 @@
 """This file is for validation of the source file"""
-from formatflick.engine.Logger_Config import logger as log
+from src.formatflick.engine.Logger_Config import logger as log
 import os
-import formatflick.engine.handler.util as util
+from src import formatflick as util
 import pandas as pd
 
 

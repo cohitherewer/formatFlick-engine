@@ -1,9 +1,8 @@
 """Main module for Formatflick"""
-import os
-from formatflick.engine.handler import source as src
-from formatflick.engine.handler import destination as dest
-from formatflick.engine.converter import core
-from formatflick.engine.Logger_Config import logger as log
+from src.formatflick.engine.handler import source as src
+from src.formatflick.engine.handler import destination as dest
+from src.formatflick.engine.converter import core
+from src.formatflick.engine.Logger_Config import logger as log
 import time
 class Formatflick:
     """
@@ -22,7 +21,6 @@ class Formatflick:
         self.source = source
         self.destination = destination
         self.destination_extension = kwargs.get("destination_extension", None)
-
         self.source_obj = src.Sourcefile_handler(self.source)
         self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension)
 
@@ -33,7 +31,7 @@ class Formatflick:
         Parameters:
         """
         start_time = time.time()
-        engine = core.Core_engine(self.source_obj.source,self.dest_obj.destination)
+        engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination)
         # print(self.source_obj)
         # print(self.dest_obj)
         if self.source_obj.extension == ".json" and self.dest_obj.extension == ".csv":
