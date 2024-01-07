@@ -25,7 +25,7 @@ jobs:
           export PYTHONPATH=$PYTHONPATH:$(pwd)/tests
           echo "${{ github.workspace }}"
           cd ..
-          ls
-#          python -m unittest tests.test_util
+#          ls
+          python -m unittest
 #          cd ../
 #          echo "${{ github.workspace }}"
