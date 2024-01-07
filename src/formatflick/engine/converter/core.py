@@ -1,5 +1,5 @@
-import formatflick.engine.converter.utils as utils
-from formatflick.engine.Logger_Config import logger as log
+import src.formatflick.engine.converter.utils as utils
+from src.formatflick.engine.Logger_Config import logger as log
 import csv
 
 

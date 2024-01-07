@@ -22,10 +22,5 @@ jobs:
 
       - name: Unit Testing
         run: |
-          python -m unittest discover -t .
+          python -m unittest discover
         working-directory: ${{ github.workspace }}
-
-      - name: Check GitHub Workspace
-        run: |
-            echo "GitHub Workspace Directory: ${{ github.workspace }}"
-            ls

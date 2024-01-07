@@ -1,6 +1,5 @@
-import json
 import unittest
-from formatflick.engine.handler import util
+from src.formatflick.engine.handler import util
 import os
 
 
