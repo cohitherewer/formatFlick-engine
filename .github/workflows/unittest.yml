@@ -22,4 +22,5 @@ jobs:
 
       - name: Unit Testing
         run: |
+          cd src
           python -m unittest discover
