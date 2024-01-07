@@ -23,7 +23,7 @@ jobs:
       - name: Unit Testing
         run: |
           python3 -m unittest
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ GITHUB_WORKSPACE }}
 
       - name: Check GitHub Workspace
         run: |
