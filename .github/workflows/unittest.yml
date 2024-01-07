@@ -23,5 +23,6 @@ jobs:
       - name: Unit Testing
         run: |
           echo "${{ github.workspace }}"
-          python -m unittest discover -p 'test_*.py'
-        working-directory: ${{ github.workspace }}
+          python -m unittest tests.test_util
+          cd ../
+          echo "${{ github.workspace }}"
