@@ -22,7 +22,7 @@ jobs:
 
       - name: Unit Testing
         run: |
-          python unittest discover
+          python -m unittest discover ../test
         working-directory: ${{ github.workspace }}
 
       - name: Check GitHub Workspace
