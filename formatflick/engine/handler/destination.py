@@ -14,7 +14,7 @@ class DestinationFile_handler:
 
     def __init__(self, destination, dest_extension):
         if not (destination or dest_extension):
-            raise Exception("Either destination or dest_extension should be given.")
+            raise Exception("Either destination or destination_extension should be given.")
         self.destination = destination if destination is not None else (
             os.path.join(os.getcwd(), 'result' + dest_extension))
         self.destination_file = destination if destination is not None else 'result'

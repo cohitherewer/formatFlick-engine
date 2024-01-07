@@ -22,7 +22,6 @@ class Formatflick:
         self.source = source
         self.destination = destination
         self.destination_extension = kwargs.get("destination_extension", None)
-
         self.source_obj = src.Sourcefile_handler(self.source)
         self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension)
 
