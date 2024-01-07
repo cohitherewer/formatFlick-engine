@@ -22,6 +22,7 @@ jobs:
 
       - name: Unit Testing
         run: |
-          cd formatflick-engine
+#          echo "${{ github.workspace }}"
+          find . -type d -not -path '*/\.*' | sed -e 's|^\./||' | awk -F'/' '{print $1}' | sort -u
           python -m unittest discover -p 'test_*.py'
         working-directory: ${{ github.workspace }}
