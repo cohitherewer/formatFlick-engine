@@ -24,3 +24,8 @@ jobs:
         run: |
           python3 -m unittest discover
         working-directory: ${{ github.workspace }}
+
+      - name: Check GitHub Workspace
+        run: |
+            echo "GitHub Workspace Directory: ${{ github.workspace }}"
+            ls -al
