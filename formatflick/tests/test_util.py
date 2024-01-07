@@ -5,7 +5,7 @@ import os
 
 
 def create_path(source):
-    return os.path.join(os.getcwd(), "tests", "sample_files", source)
+    return os.path.join(os.getcwd(),"formatflick", "tests", "sample_files", source)
 
 
 class TestUtil(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestUtil(unittest.TestCase):
         self.invalid_xml = create_path("invalid_samplexml.xml")
 
         self.file_path = create_path("samplefile.csv")
-        self.invalid_file_path = os.path.join(os.getcwd(), "tests", "sample_files", "another", "samplefile.csv")
+        self.invalid_file_path = os.path.join(os.getcwd(),"formatflick", "tests", "sample_files", "another", "samplefile.csv")
 
         self.valid_extension = util.VALID_EXTENSION
 
