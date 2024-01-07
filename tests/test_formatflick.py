@@ -6,7 +6,7 @@ import os
 
 class TestFormatFlick(unittest.TestCase):
     def setUp(self):
-        self.source_json = os.path.join(os.getcwd(),"formatflick", "tests", "sample_files", "samplejson.json")
+        self.source_json = os.path.join(os.getcwd(), "tests", "sample_files", "samplejson.json")
         # self.destionation_csv = os.path.join(os.getcwd(),"tests","sample_files","sample")
 
     def test_json_no_dest_ext(self):
