@@ -23,10 +23,9 @@ jobs:
       - name: Unit Testing
         run: |
           python3 -m unittest
-        working-directory: $GITHUB_WORKSPACE
+        working-directory: ${{ GITHUB_WORKSPACE }}
 
       - name: Check GitHub Workspace
         run: |
             echo "GitHub Workspace Directory: ${{ github.workspace }}"
-            ls 
-            cd tests
+            ls
