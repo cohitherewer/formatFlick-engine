@@ -1,6 +1,6 @@
 import src.formatflick.engine.converter.utils as utils
 from src.formatflick.engine.Logger_Config import logger as log
-import csv
+import csv, json
 
 
 class Core_engine:
@@ -26,3 +26,17 @@ class Core_engine:
             writer.writerows(flatten_json_obj)
         log.info("Conversion Complete")
         log.info(f"Resulting file can be seen at {self.destination}")
+
+    def csv_to_json(self):
+        log.info("Converting from CSV to JSON")
+        log.info("Reading the CSV file...")
+
+        df = utils.read_csv(self.source)
+        data = utils.deflatten_csv_util(df)
+        log.info("Started Conversion...")
+        with open(self.destination, 'w') as json_file:
+            json.dump(data, json_file, indent=2)
+
+        log.info("Conversion Complete")
+        log.info(f"Resulting file can be seen at {self.destination}")
+
