@@ -36,6 +36,8 @@ class Formatflick:
         # print(self.dest_obj)
         if self.source_obj.extension == ".json" and self.dest_obj.extension == ".csv":
             engine.json_to_csv()
+        elif self.source_obj.extension == ".csv" and self.dest_obj.extension == ".json":
+            engine.csv_to_json()
 
         end_time = time.time()
         log.info(f"Time Taken: {end_time-start_time}s")
