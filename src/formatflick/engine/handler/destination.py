@@ -1,5 +1,5 @@
 import os
-from src import formatflick as util
+from src.formatflick.engine.handler import util
 from src.formatflick.engine.Logger_Config import logger as log
 
 
