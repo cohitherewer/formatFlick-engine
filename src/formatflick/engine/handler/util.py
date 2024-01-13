@@ -2,7 +2,7 @@ import json
 import os.path
 import xml.etree.ElementTree as ET
 
-VALID_EXTENSION = [".csv", ".csv", ".json"]
+VALID_EXTENSIONS = [".csv", ".csv", ".json", ".tsv"]
 
 
 def get_file_name(source):
@@ -27,7 +27,7 @@ def get_extension(source):
 
 def validate_extension(extension):
     """Util function to validate an extension"""
-    return extension in VALID_EXTENSION
+    return extension in VALID_EXTENSIONS
 
 
 def validate_json(file_path):

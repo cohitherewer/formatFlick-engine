@@ -21,7 +21,6 @@ class DestinationFile_handler:
         self.extension = dest_extension if dest_extension is not None else self.get_extension()
         self.validate_extension()
 
-
     def validate_extension(self):
         """validate the extension"""
         log.info("Validating File Extension of Destination File")
