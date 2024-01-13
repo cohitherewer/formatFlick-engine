@@ -2,7 +2,7 @@
 from src.formatflick.engine.handler import source as src
 from src.formatflick.engine.handler import destination as dest
 from src.formatflick.engine.converter import core
-from src.formatflick.engine.Logger_Config import logger as log
+from src.formatflick.engine.Logger_Config import create_logger
 import time
 class Formatflick:
     """
@@ -21,17 +21,20 @@ class Formatflick:
         self.source = source
         self.destination = destination
         self.destination_extension = kwargs.get("destination_extension", None)
-        self.source_obj = src.Sourcefile_handler(self.source)
-        self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension)
 
-        self.engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination)
+        verb = kwargs.get("verbosity", 3)
+        self.log = create_logger(verb)
+        self.source_obj = src.Sourcefile_handler(self.source, self.log)
+        self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension, self.log)
+
+        self.engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination,self.log)
         self.function_call_map = {
             (".json", ".csv"): self.engine.json_to_csv,
             (".csv", ".json"): self.engine.csv_to_json,
             (".csv", ".tsv"): self.engine.csv_to_tsv,
             (".tsv", ".csv"): self.engine.tsv_to_csv,
             (".tsv", ".json"): self.engine.tsv_to_json,
-            (".json", ".tsv"): self.engine.json_to_tsv,
+            (".json", ".tsv"): self.engine.json_to_tsv
         }
 
     def convert(self):
@@ -45,6 +48,6 @@ class Formatflick:
             conversion_function = self.function_call_map[conversion_key]
             conversion_function()
         else:
-            log.warn(f"{self.source_obj.extension} to {self.dest_obj.extension} is unsupported file conversion")
+            self.log.warn(f"{self.source_obj.extension} to {self.dest_obj.extension} is unsupported file conversion")
         end_time = time.time()
-        log.info(f"Time Taken: {end_time-start_time}s")
+        self.log.info(f"Time Taken: {end_time-start_time}s")
