@@ -4,8 +4,25 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "formatflick"
+dependencies = [
+    "python>3.11",
+    "pandas"
+]
+requires-python=">=3.11"
+version="0.1.1"
 authors = [{name = "Abhinaba Chakraborty", email = "abhinabacr4@gmail.com"}]
+maintainers = [{name="Abhinaba Chakraborty", email ="abhinabacr4@gmail.com"}]
+description = "formatflick: change your file formats as you wish"
 readme = "README.md"
 license = {file = "LICENSE"}
-classifiers = ["License :: OSI Approved :: MIT License"]
-dynamic = ["version", "description"]
+keywords = ["python","file","extension","json","xml","csv","pandas"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "Programming Language :: Python :: 3.11"
+]
+[project.urls]
+Homepage = "https://github.com/cohitherewer/formatflick-engine"
+Repository = "https://github.com/cohitherewer/formatflick-engine"
+Issues = "https://github.com/cohitherewer/formatflick-engine/issues"
