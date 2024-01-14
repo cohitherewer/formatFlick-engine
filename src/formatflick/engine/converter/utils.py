@@ -28,9 +28,9 @@ def read_json(file_path):
     return obj
 
 
-def read_csv(file_path):
+def read_csv(file_path, delimiter=','):
     """Reading csv file"""
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(file_path, delimiter=delimiter)
     return df
 
 
