@@ -6,7 +6,8 @@ build-backend = "flit_core.buildapi"
 name = "formatflick"
 dependencies = [
     "python>3.11",
-    "pandas"
+    "pandas",
+    "lxml"
 ]
 requires-python=">=3.11"
 version="0.1.2"
