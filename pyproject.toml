@@ -9,7 +9,7 @@ dependencies = [
     "pandas"
 ]
 requires-python=">=3.11"
-version="0.1.1"
+version="0.1.0"
 authors = [{name = "Abhinaba Chakraborty", email = "abhinabacr4@gmail.com"}]
 maintainers = [{name="Abhinaba Chakraborty", email ="abhinabacr4@gmail.com"}]
 description = "formatflick: change your file formats as you wish"
