@@ -37,19 +37,22 @@ class Core_engine:
         """handles json to csv file conversion"""
         self.json_to_util(extension=".csv")
 
-    def csv_to_json(self):
-        """handles csv to json file conversion"""
-        self.log.info("Converting from .csv to .json")
+    def to_json_util(self, extension):
+        """handles csv/tsv to json file coversion"""
+        self.log.info(f"Converting from {extension} to .json")
         self.log.info(f"Reading the {self.source} file...")
-
-        df = utils.read_csv(self.source)
-        data = utils.deflatten_csv_util(df)
+        sep = ',' if extension == ".csv" else '\t'
+        data = utils.read_csv(self.source, delimiter=sep)
         self.log.info("Started Conversion...")
-        with open(self.destination, 'w') as json_file:
+        with open(self.destination, 'w+') as json_file:
             json.dump(data, json_file, indent=2)
 
         self.log.info("Conversion Complete")
         self.log.info(f"Resulting file can be seen at {self.destination}")
+
+    def csv_to_json(self):
+        """handles csv to json file conversion"""
+        self.to_json_util(extension=".csv")
 
     def csv_to_tsv(self):
         """handles csv to tsv file conversion"""
@@ -79,7 +82,7 @@ class Core_engine:
 
     def tsv_to_json(self):
         """handles tsv to json file conversion"""
-        pass
+        self.to_json_util(extension=".tsv")
 
     def custom_convert(self):
         """this function can be overwritten for custom implementations"""
