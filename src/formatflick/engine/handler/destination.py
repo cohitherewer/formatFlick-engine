@@ -25,34 +25,33 @@ class DestinationFile_handler:
 
     def validate_extension(self):
         """validate the extension"""
-        self.log.info("Validating File Extension of Destination File")
+        self.log.log_extension_extraction_msg(src=self.destination)
         if util.validate_extension(self.extension):
-            self.log.info("Valid File Extension")
+            self.log.log_valid_extension_msg()
         else:
-            self.log.error(f"{self.extension} is not a valid File Extension")
+            self.log.log_invalid_extension_error()
             raise Exception(f"{self.extension} is not a valid File Extension")
 
     def get_extension(self):
         """Get the extension"""
-        self.log.info("Getting the Extension")
+        self.log.custom_message(msg="Getting the Destination File Extension")
         u, v = util.get_extension(self.destination_file)
         if u:
-            self.log.debug(f"Destination File Extension is {v}")
             return v
         else:
-            self.log.error(f"Error occurred while getting File Extension: {v}")
-            raise Exception(f"Error while extracting file extension from {self.destination_file}: {v}")
+            self.log.log_extension_extraction_error()
+            raise Exception(f"{v}")
 
     def create_dest_file(self):
         """Creating the destination file"""
-        self.log.info("Creating the destination file...")
+        self.log.custom_message(msg="Creating the destination file...")
         if os.path.exists(self.destination):
-            self.log.warn(f"Path: {self.destination} already exists")
+            self.log.log_path_exists_warning()
         else:
-            self.log.info(f"Creating a file with path:{self.destination_file}")
+            self.log.log_custom_message(f"Creating a file with path: {self.destination_file}")
             u, v = util.create_file(self.destination)
             if u:
-                self.log.info("Destination File Created Successfully")
+                self.log.log_create_file()
             else:
-                self.log.error("Error in creating Destination File")
-                raise Exception(f"Error in creating Destination File: {v}")
+                self.log.log_create_file_error()
+                raise Exception(f"{v}")

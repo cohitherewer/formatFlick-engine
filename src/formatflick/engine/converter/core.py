@@ -1,6 +1,7 @@
-import src.formatflick.engine.converter.utils as utils
 # from src.formatflick.engine.Logger_Config import logger as log
-import csv, json
+import csv
+import json
+import src.formatflick.engine.converter.utils as utils
 
 
 class Core_engine:
@@ -8,7 +9,7 @@ class Core_engine:
 
     def __init__(self, source, destination, log):
         self.log = log
-        self.log.info("Initiating Conversion")
+        self.log.custom_message(msg="Initiating Process...")
         self.source = source
         self.destination = destination
 
