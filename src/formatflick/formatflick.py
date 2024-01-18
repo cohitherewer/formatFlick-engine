@@ -4,6 +4,8 @@ from src.formatflick.engine.handler import destination as dest
 from src.formatflick.engine.converter import core
 from src.formatflick.engine.Logger_Config import create_logger
 import time
+
+
 class Formatflick:
     """
     Initializes an instance of the Formatflick class with the provided source and destination paths.
@@ -27,7 +29,7 @@ class Formatflick:
         self.source_obj = src.Sourcefile_handler(self.source, self.log)
         self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension, self.log)
 
-        self.engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination,self.log)
+        self.engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination, self.log)
         self.function_call_map = {
             (".json", ".csv"): self.engine.json_to_csv,
             (".csv", ".json"): self.engine.csv_to_json,
@@ -48,6 +50,6 @@ class Formatflick:
             conversion_function = self.function_call_map[conversion_key]
             conversion_function()
         else:
-            self.log.warn(f"{self.source_obj.extension} to {self.dest_obj.extension} is unsupported file conversion")
+            self.log.log_unsupported_file_conversion_error(self.source_obj.extension, self.dest_obj.extension)
         end_time = time.time()
-        self.log.info(f"Time Taken: {end_time-start_time}s")
+        self.log.log_time(end_time, start_time)

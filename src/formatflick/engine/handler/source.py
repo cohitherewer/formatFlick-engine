@@ -11,10 +11,10 @@ class Sourcefile_handler:
     Possible Checks are
     - if the file exists in the path or not
     - the file is csv, xml or json or not
-    - the file satisfies the encoding or not ( specially for json and xml)
+    - the file satisfies the encoding or not (specially for json and xml)
     """
 
-    def __init__(self, source, log):
+    def __init__(self, source, log, *args, **kwargs):
         self.source = source
         self.log = log
 
@@ -35,35 +35,35 @@ class Sourcefile_handler:
         """
         Get the file name
         """
-        self.log.info("Getting the File Name...")
+        self.log.log_custom_message(msg="Getting the Source File Name...")
         u, v = util.get_file_name(self.source)
         if u:
             self.source_file = v
         else:
-            self.log.error(f"Error occurred while extracting File Name: {v}", exc_info=False)
-            raise Exception(f"Error while extracting file name from file path {self.source}: {v}")
+            self.log.log_filename_extraction()
+            raise Exception(f"{v}")
 
     def get_extension(self):
         """
         Get the file extension
         """
-        self.log.info("Getting the extension")
+        self.log.log_custom_message(msg="Getting the extension...")
         u, v = util.get_extension(self.source_file)
         if u:
             self.extension = v
         else:
-            self.log.error(f"Error occurred while getting File Extension: {v}")
-            raise Exception(f"Error while extracting file extension from {self.source_file}: {v}")
+            self.log.log_extension_extraction_error()
+            raise Exception(f"{v}")
 
     def validate_extension(self):
         """
         Validate the extension
         """
-        self.log.info("Validating the File Extension of Source File")
+        self.log.log_extension_extraction_msg(src=self.source_file)
         if util.validate_extension(self.extension):
-            self.log.info("Valid File Extension")
+            self.log.log_valid_extension_msg()
         else:
-            self.log.error(f"{self.extension} is not a valid File Extension")
+            self.log.log_invalid_extension_error(self.extension)
             raise Exception(f"{self.extension} is not a valid File Extension")
 
     def is_exists(self):
@@ -71,32 +71,36 @@ class Sourcefile_handler:
         Validate the source path
         """
         if os.path.exists(self.source):
-            self.log.info("Path Exists Processing ...")
+            self.log.log_custom_message(msg="Path Exists Processing")
         else:
-            self.log.error(f"The file at {self.source} doesn't exist")
-            raise FileNotFoundError(f"The file at {self.source} doesn't exist")
+            self.log.log_invalid_file_path(self.source)
+            raise FileNotFoundError()
 
     def validate_file(self):
         if self.extension == ".json":
-            self.log.info("Validating the JSON Encoding...")
+            self.log.log_validating_file_encoding(self.source)
             u, v = util.validate_json(self.source)
             if u:
-                self.log.info("JSON Encoding Validated")
+                self.log.log_validated_file_encoding(self.source)
                 self.object = v.copy()
             else:
-                self.log.error("Problem in JSON Encoding")
-                raise Exception(f"Problem in JSON Encoding: {v}")
+                self.log.log_invalid_file_encoding(self.source)
+                raise Exception
 
         elif self.extension == ".xml":
-            self.log.infor("Validating the XML Encoding")
+            self.log.log_validating_file_encoding(self.source)
             u, v = util.validate_xml(self.source)
             if u:
-                self.log.info("XML Encoding Validated")
+                self.log.log.validated_file_encoding(self.source)
                 self.object = v.getroot()
             else:
-                self.log.error("Problem in XML Encoding")
-                raise Exception(f"Problem in XML Encoding: {v}")
+                self.log.log_invalid_extension_error(self.source)
+                raise Exception(f"{v}")
 
-        elif self.extension == ".csv":
-            self.log.info("Skipping the File Validation for CSV")
-            self.object = pd.read_csv(self.source)
+        elif self.extension == ".csv" or self.extension == ".tsv":
+            self.log.log_custom_message(msg=f"Skipping the File Validation for {self.source}")
+            # self.object = pd.read_csv(self.source)
+
+        elif self.extension == ".html":
+            self.log.log_validating_file_encoding(self.source)
+            pass
