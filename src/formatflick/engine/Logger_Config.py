@@ -11,7 +11,7 @@ log_level_map = {
 
 
 class create_logger:
-    def __init__(self, verb):
+    def __init__(self, verb, *args, **kwargs):
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setFormatter(formatter)
@@ -81,6 +81,18 @@ class create_logger:
 
     def log_create_file_error(self):
         self.logger.error("Error in creating Destination File")
+
+    # Initiating specific engine
+    def log_initiating_engine(self,engine):
+        self.logger.info(f"Initiating {engine} engine...")
+
+    def log_process_initialization(self, source, destination):
+        self.logger.info(f"Converting from {source} to {destination}")
+        self.logger.info(f"Reading the {source} file")
+
+    def log_process_completion(self,destination):
+        self.logger.info("Conversion Complete")
+        self.logger.info(f"Resultant file can be seen at {destination}")
 
     # custom log
     def log_custom_message(self, *args, **kwargs):

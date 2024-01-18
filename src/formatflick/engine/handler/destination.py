@@ -12,15 +12,15 @@ class DestinationFile_handler:
     - the file is csv, xml or json or not
     """
 
-    def __init__(self, destination, dest_extension, log):
+    def __init__(self, destination, dest_extension, log, *args, **kwargs):
         self.log = log
 
         if not (destination or dest_extension):
             raise Exception("Either destination or destination_extension should be given.")
         self.destination = destination if destination is not None else (
             os.path.join(os.getcwd(), 'result' + dest_extension))
-        self.destination_file = destination if destination is not None else 'result'
-        self.extension = dest_extension if dest_extension is not None else self.get_extension()
+        self.destination_file = destination if destination is not None else 'result'+dest_extension
+        self.extension = self.get_extension()
         self.validate_extension()
 
     def validate_extension(self):
@@ -29,12 +29,12 @@ class DestinationFile_handler:
         if util.validate_extension(self.extension):
             self.log.log_valid_extension_msg()
         else:
-            self.log.log_invalid_extension_error()
+            self.log.log_invalid_extension_error(self.extension)
             raise Exception(f"{self.extension} is not a valid File Extension")
 
     def get_extension(self):
         """Get the extension"""
-        self.log.custom_message(msg="Getting the Destination File Extension")
+        self.log.log_custom_message(msg="Getting the Destination File Extension")
         u, v = util.get_extension(self.destination_file)
         if u:
             return v

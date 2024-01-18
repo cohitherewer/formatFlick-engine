@@ -14,7 +14,7 @@ class Sourcefile_handler:
     - the file satisfies the encoding or not (specially for json and xml)
     """
 
-    def __init__(self, source, log):
+    def __init__(self, source, log, *args, **kwargs):
         self.source = source
         self.log = log
 
@@ -63,7 +63,7 @@ class Sourcefile_handler:
         if util.validate_extension(self.extension):
             self.log.log_valid_extension_msg()
         else:
-            self.log.log_invalid_extension_error()
+            self.log.log_invalid_extension_error(self.extension)
             raise Exception(f"{self.extension} is not a valid File Extension")
 
     def is_exists(self):
@@ -73,7 +73,7 @@ class Sourcefile_handler:
         if os.path.exists(self.source):
             self.log.log_custom_message(msg="Path Exists Processing")
         else:
-            self.log.log_invalid_file_path()
+            self.log.log_invalid_file_path(self.source)
             raise FileNotFoundError()
 
     def validate_file(self):
@@ -99,7 +99,8 @@ class Sourcefile_handler:
 
         elif self.extension == ".csv" or self.extension == ".tsv":
             self.log.log_custom_message(msg=f"Skipping the File Validation for {self.source}")
-            self.object = pd.read_csv(self.source)
+            # self.object = pd.read_csv(self.source)
 
         elif self.extension == ".html":
             self.log.log_validating_file_encoding(self.source)
+            pass
