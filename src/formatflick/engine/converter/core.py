@@ -1,23 +1,34 @@
-# from src.formatflick.engine.Logger_Config import logger as log
-import csv
-import json
-import src.formatflick.engine.converter.utils as utils
 from src.formatflick.engine.converter.text_engine import json_engine as jengine
 from src.formatflick.engine.converter.text_engine import csv_engine as cengine
+import src.formatflick.engine.global_var as var
 
 
 class Core_engine:
     """Core_engine that handles the conversion"""
 
-    def __init__(self, source, destination, log, *args, **kwargs):
-        """Init function for Core_engine"""
+    def __init__(self, source, log, *args, **kwargs):
+        """Initialization for Core_engine"""
         self.log = log
         self.log.log_custom_message(msg="Initiating Process...")
-        self.source = source
-        self.destination = destination
 
-        self.log.log_process_initialization(source=self.source,
-                                            destination=self.destination)
+        self.source = source  # get the source
+        # self.destination = destination
+        self.mode = kwargs.get("mode", var.FILE_MODE)  # get the mode
+        if self.mode == var.FILE_MODE:
+            # for file mode
+            self.destination = kwargs.get("destination", None)
+            if self.destination is None:
+                raise Exception("For 'file' mode give the proper destination")
+            self.log.log_process_initialization(source=self.source,
+                                                destination=self.destination)
+            self.t_dst = self.destination
+        else:
+            self.extension = kwargs.get("extension", None)
+            if self.extension is None:
+                raise Exception("For non 'file' mode give the proper extension")
+            self.log.log_process_initialization(source=self.source,
+                                                destination=self.extension)
+            self.t_dst = self.extension
 
     # def json_to_util(self, *args, **kwargs):
     #     """
@@ -44,15 +55,18 @@ class Core_engine:
         """handles json to csv file conversion"""
         # self.json_to_util(extension=".csv")
         flatten_obj, headers = jengine.json_engine_handle(self.source, self.log)
-        cengine.csv_engine_convert(destination=self.destination,
-                                   obj=flatten_obj,
-                                   sep=',',
-                                   extension=".json",
-                                   log=self.log,
-                                   headers=headers,
-                                   newline='',
-                                   encoding='utf-8'
-                                   )
+        # t_dst = None
+        obj = cengine.csv_engine_convert(destination=self.t_dst,
+                                         obj=flatten_obj,
+                                         sep=',',
+                                         extension=".json",
+                                         log=self.log,
+                                         headers=headers,
+                                         newline='',
+                                         encoding='utf-8',
+                                         mode=self.mode
+                                         )
+        return obj
 
     # def to_json_util(self, extension):
     #     """handles csv/tsv to json file conversion"""
@@ -70,40 +84,46 @@ class Core_engine:
     def csv_to_json(self):
         """handles csv to json file conversion"""
         df = cengine.csv_engine_handle(self.source, extension=".csv", log=self.log)
-        jengine.json_engine_convert(destination=self.destination,
-                                    log=self.log,
-                                    data=df,
-                                    indent=2
-                                    )
+        obj = jengine.json_engine_convert(destination=self.t_dst,
+                                          log=self.log,
+                                          data=df,
+                                          indent=2,
+                                          mode=self.mode
+                                          )
+        return obj
         # self.to_json_util(extension=".csv")
 
     def csv_to_tsv(self):
         """handles csv to tsv file conversion"""
 
-        df = cengine.csv_engine_handle(self.source, extension=".csv")
+        df = cengine.csv_engine_handle(self.source, extension=".csv", log=self.log)
         # df.to_csv(self.destination, sep='\t', index=False)
 
-        cengine.csv_engine_convert(destination=self.destination,
-                                   log=self.log,
-                                   obj=df,
-                                   extension=".tsv",
-                                   sep='\t',
-                                   index=False
-                                   )
+        obj = cengine.csv_engine_convert(destination=self.t_dst,
+                                         log=self.log,
+                                         obj=df,
+                                         extension=".tsv",
+                                         sep='\t',
+                                         index=False,
+                                         mode=self.mode
+                                         )
+        return obj
 
     def tsv_to_csv(self):
         """handles tsv to csv file conversion"""
         # self.log.info("Converting from .tsv to .csv")
         # self.log.info(f"Reading the {self.source} file...")
         # df = utils.read_csv(self.source, delimiter='\t')
-        df = cengine.csv_engine_handle(self.source, extension=".tsv")
-        cengine.csv_engine_convert(destination=self.destination,
-                                   log=self.log,
-                                   data=df,
-                                   extension=".csv",
-                                   sep=' ',
-                                   index=False
-                                   )
+        df = cengine.csv_engine_handle(self.source, extension=".tsv", log=self.log)
+        obj = cengine.csv_engine_convert(destination=self.t_dst,
+                                         log=self.log,
+                                         obj=df,
+                                         extension=".csv",
+                                         sep=' ',
+                                         index=False,
+                                         mode=self.mode
+                                         )
+        return obj
         # df.to_csv(self.destination, index=False)
         # self.log.info("Conversion Complete")
         # self.log.info(f"Resulting file can be seen at {self.destination}")
@@ -112,20 +132,23 @@ class Core_engine:
         """handles json to tsv file conversion"""
         # self.json_to_util(extension=".tsv")
         flatten_obj, headers = jengine.json_engine_handle(self.source, self.log)
-        cengine.csv_engine_convert(destination=self.destination,
-                                   obj=flatten_obj,
-                                   sep='\t',
-                                   extension=".json",
-                                   log=self.log,
-                                   headers=headers,
-                                   newline='',
-                                   encoding='utf-8'
-                                   )
+        obj = cengine.csv_engine_convert(destination=self.t_dst,
+                                         obj=flatten_obj,
+                                         sep='\t',
+                                         extension=".json",
+                                         log=self.log,
+                                         headers=headers,
+                                         newline='',
+                                         encoding='utf-8',
+                                         mode=self.mode
+                                         )
+        return obj
 
     def tsv_to_json(self):
         """handles tsv to json file conversion"""
         df = cengine.csv_engine_handle(self.source, extension=".tsv", log=self.log)
-        jengine.json_engine_convert(self.destination, self.log, data=df, index=2)
+        obj = jengine.json_engine_convert(self.t_dst, self.log, data=df, index=2, mode=self.mode)
+        return obj
         # self.to_json_util(extension=".tsv")
 
     def custom_convert(self):
@@ -133,4 +156,7 @@ class Core_engine:
         pass
 
     def __del__(self):
-        self.log.log_process_completion(destination=self.destination)
+        if self.mode == var.FILE_MODE:
+            self.log.log_process_completion(destination=self.destination)
+        else:
+            self.log.log_process_completion(destination=self.extension)

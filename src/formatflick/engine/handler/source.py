@@ -5,7 +5,7 @@ from src.formatflick.engine.handler import util
 import pandas as pd
 
 
-class Sourcefile_handler:
+class SourceFile_handler:
     """
     Handles checks for source files
     Possible Checks are
