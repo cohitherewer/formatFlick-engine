@@ -2,7 +2,7 @@ import json
 import os.path
 import xml.etree.ElementTree as ET
 
-VALID_EXTENSIONS = [".csv", ".csv", ".json", ".tsv", ".html"]
+VALID_EXTENSIONS = [".csv", ".json", ".tsv", ".html"]
 
 
 def get_file_name(source):

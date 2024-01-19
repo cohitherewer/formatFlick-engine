@@ -1,15 +1,15 @@
 """Main module for Formatflick"""
 from src.formatflick.engine.handler import source as src
-from src.formatflick.engine.handler import destination as dest
+from src.formatflick.engine.handler import destination as dst
 from src.formatflick.engine.converter import core
 from src.formatflick.engine.Logger_Config import create_logger
+import src.formatflick.engine.global_var as var
 import time
 
 
-class Formatflick:
+class formatflick:
     """
-    Initializes an instance of the Formatflick class with the provided source and destination paths.
-
+    Initializes an instance of the formatflick class with the provided source and destination paths.
     Parameters:
     - source (str): The source path for the module.
     - destination (str, optional): The destination path for the operation.
@@ -20,16 +20,33 @@ class Formatflick:
 
     def __init__(self, source, destination=None, *args, **kwargs):
         """init"""
+        self.mode = kwargs.get("mode", var.FILE_MODE)
         self.source = source
         self.destination = destination
         self.destination_extension = kwargs.get("destination_extension", None)
 
         verb = kwargs.get("verbosity", 3)
         self.log = create_logger(verb)
-        self.source_obj = src.Sourcefile_handler(self.source, self.log)
-        self.dest_obj = dest.DestinationFile_handler(self.destination, self.destination_extension, self.log)
+        self.source_obj = src.SourceFile_handler(source=self.source, log=self.log, args=args, kwargs=kwargs)
 
-        self.engine = core.Core_engine(self.source_obj.source, self.dest_obj.destination, self.log)
+        # mode = kwargs.get("mode", var.FILE_MODE)
+        self.dst_obj = dst.DestinationFile_handler(destination=self.destination,
+                                                   dst_extension=self.destination_extension,
+                                                   log=self.log,
+                                                   mode=self.mode
+                                                   )
+        if self.mode == var.FILE_MODE:
+            self.engine = core.Core_engine(source=self.source_obj.source,
+                                           destination=self.dst_obj.destination,
+                                           log=self.log,
+                                           mode=self.mode
+                                           )
+        else:
+            self.engine = core.Core_engine(source=self.source_obj.source,
+                                           log=self.log,
+                                           extension=self.dst_obj.extension,
+                                           mode=self.mode
+                                           )
         self.function_call_map = {
             (".json", ".csv"): self.engine.json_to_csv,
             (".csv", ".json"): self.engine.csv_to_json,
@@ -45,11 +62,13 @@ class Formatflick:
         Parameters:
         """
         start_time = time.time()
-        conversion_key = (self.source_obj.extension, self.dest_obj.extension)
+        conversion_key = (self.source_obj.extension, self.dst_obj.extension)
+        res = None
         if conversion_key in self.function_call_map:
             conversion_function = self.function_call_map[conversion_key]
-            conversion_function()
+            res = conversion_function()
         else:
-            self.log.log_unsupported_file_conversion_error(self.source_obj.extension, self.dest_obj.extension)
+            self.log.log_unsupported_file_conversion_error(self.source_obj.extension, self.dst_obj.extension)
         end_time = time.time()
         self.log.log_time(end_time, start_time)
+        return res

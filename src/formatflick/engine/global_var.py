@@ -1,0 +1,6 @@
+"""
+GLOBAL VARIABLES
+"""
+# MODES
+FILE_MODE = 'file'
+NFILE_MODE = 'nfile'

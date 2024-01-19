@@ -1,5 +1,5 @@
 import unittest
-from src.formatflick.formatflick import Formatflick as ffe
+from src.formatflick.formatflick import formatflick as ffe
 # import pandas
 import os
 import re
@@ -39,20 +39,40 @@ class TestFormatFlick(unittest.TestCase):
         obj.convert()
         self.assertTrue(os.path.exists(self.destination_csv))
 
+        obj = ffe(self.source_json, destination_extension=".csv",mode="murgi")
+        res = obj.convert()
+        # print(type(res).__name__)
+        self.assertEqual(type(res).__name__,'DataFrame')
+
     def test_json_to_tsv(self):
         obj = ffe(self.source_json, self.destination_tsv)
         obj.convert()
         self.assertTrue(os.path.exists(self.destination_tsv))
+
+        obj = ffe(self.source_json, destination_extension=".tsv", mode="murgi")
+        res = obj.convert()
+        # print(type(res).__name__)
+        self.assertEqual(type(res).__name__, 'DataFrame')
 
     def test_csv_to_json(self):
         obj = ffe(self.source_csv, self.destination_json)
         obj.convert()
         self.assertTrue(os.path.exists(self.destination_json))
 
+        obj = ffe(self.source_csv, destination_extension=".json", mode="murgi")
+        res = obj.convert()
+        # print(type(res).__name__)
+        self.assertEqual(type(res).__name__, 'str')
+
     def test_tsv_to_json(self):
         obj = ffe(self.source_tsv, self.destination_json)
         obj.convert()
         self.assertTrue(os.path.exists(self.destination_json))
+
+        obj = ffe(self.source_tsv, destination_extension=".json", mode="murgi")
+        res = obj.convert()
+        # print(type(res).__name__)
+        self.assertEqual(type(res).__name__, 'str')
 
 
 if __name__ == '__main__':
