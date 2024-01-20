@@ -1,4 +1,3 @@
-from src.formatflick.engine import handler
 from .text_engine import json_engine as jengine
 from .text_engine import csv_engine as cengine
 from ..global_var import *

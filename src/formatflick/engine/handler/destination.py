@@ -1,6 +1,5 @@
 import os
 from .util import *
-# from src.formatflick.engine.Logger_Config import logger as self.log
 
 
 class DestinationFile_handler:
