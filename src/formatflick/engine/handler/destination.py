@@ -1,5 +1,5 @@
 import os
-from src.formatflick.engine.handler import util
+from .util import *
 # from src.formatflick.engine.Logger_Config import logger as self.log
 
 
@@ -35,7 +35,7 @@ class DestinationFile_handler:
             self.log.log_extension_extraction_msg(src=self.destination)
         except AttributeError:
             pass
-        if util.validate_extension(self.extension):
+        if validate_extension(self.extension):
             self.log.log_valid_extension_msg()
         else:
             self.log.log_invalid_extension_error(self.extension)
@@ -44,7 +44,7 @@ class DestinationFile_handler:
     def get_extension(self):
         """Get the extension"""
         self.log.log_custom_message(msg="Getting the Destination File Extension")
-        u, v = util.get_extension(self.destination_file)
+        u, v = get_extension(self.destination_file)
         if u:
             return v
         else:

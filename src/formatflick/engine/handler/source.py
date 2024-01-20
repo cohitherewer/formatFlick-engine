@@ -1,7 +1,7 @@
 """This file is for validation of the source file"""
 # from src.formatflick.engine.Logger_Config import logger as log
 import os
-from src.formatflick.engine.handler import util
+from .util import *
 import pandas as pd
 
 
@@ -36,7 +36,7 @@ class SourceFile_handler:
         Get the file name
         """
         self.log.log_custom_message(msg="Getting the Source File Name...")
-        u, v = util.get_file_name(self.source)
+        u, v = get_file_name(self.source)
         if u:
             self.source_file = v
         else:
@@ -48,7 +48,7 @@ class SourceFile_handler:
         Get the file extension
         """
         self.log.log_custom_message(msg="Getting the extension...")
-        u, v = util.get_extension(self.source_file)
+        u, v = get_extension(self.source_file)
         if u:
             self.extension = v
         else:
@@ -60,7 +60,7 @@ class SourceFile_handler:
         Validate the extension
         """
         self.log.log_extension_extraction_msg(src=self.source_file)
-        if util.validate_extension(self.extension):
+        if validate_extension(self.extension):
             self.log.log_valid_extension_msg()
         else:
             self.log.log_invalid_extension_error(self.extension)
@@ -79,7 +79,7 @@ class SourceFile_handler:
     def validate_file(self):
         if self.extension == ".json":
             self.log.log_validating_file_encoding(self.source)
-            u, v = util.validate_json(self.source)
+            u, v = validate_json(self.source)
             if u:
                 self.log.log_validated_file_encoding(self.source)
                 self.object = v.copy()
@@ -89,7 +89,7 @@ class SourceFile_handler:
 
         elif self.extension == ".xml":
             self.log.log_validating_file_encoding(self.source)
-            u, v = util.validate_xml(self.source)
+            u, v = validate_xml(self.source)
             if u:
                 self.log.log.validated_file_encoding(self.source)
                 self.object = v.getroot()
