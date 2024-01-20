@@ -3,7 +3,7 @@ from .engine.handler import source as src
 from .engine.handler import destination as dst
 from .engine.converter import core
 from .engine.Logger_Config import create_logger
-impo
+from .engine.global_var import *
 import time
 
 
@@ -20,7 +20,7 @@ class formatflick:
 
     def __init__(self, source, destination=None, *args, **kwargs):
         """init"""
-        self.mode = kwargs.get("mode", var.FILE_MODE)
+        self.mode = kwargs.get("mode", FILE_MODE)
         self.source = source
         self.destination = destination
         self.destination_extension = kwargs.get("destination_extension", None)
@@ -35,7 +35,7 @@ class formatflick:
                                                    log=self.log,
                                                    mode=self.mode
                                                    )
-        if self.mode == var.FILE_MODE:
+        if self.mode == FILE_MODE:
             self.engine = core.Core_engine(source=self.source_obj.source,
                                            destination=self.dst_obj.destination,
                                            log=self.log,

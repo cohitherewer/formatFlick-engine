@@ -10,7 +10,7 @@ dependencies = [
     "dask >= 2024.1.0"
 ]
 requires-python=">=3.9"
-version="0.1.4"
+version="0.1.7"
 authors = [{name = "Abhinaba Chakraborty", email = "abhinabacr4@gmail.com"}]
 maintainers = [{name="Abhinaba Chakraborty", email ="abhinabacr4@gmail.com"}]
 description = "formatflick: change your file formats as you wish"

@@ -7,7 +7,7 @@ This file contains several functions to read, modify a csv and a tsv file
 """
 import csv
 import pandas as pd
-import src.formatflick.engine.global_var as var
+from ...global_var import *
 
 
 def deflatten_csv_util(d, parent_key='', sep='.'):
@@ -63,8 +63,8 @@ def csv_engine_convert(destination, obj, log, *args, **kwargs):
     - file mode => write the entire resultant data into a file
     - non file mode => return the entire resultant object into a file
     """
-    mode = kwargs.get("mode", var.FILE_MODE)
-    if mode == var.FILE_MODE:
+    mode = kwargs.get("mode", FILE_MODE)
+    if mode == FILE_MODE:
         sep = kwargs.get("sep", ',')
         extension = kwargs.get("extension", None)
         assert extension is not None
@@ -91,9 +91,6 @@ def csv_engine_convert(destination, obj, log, *args, **kwargs):
         if isinstance(obj, pd.DataFrame):
             return None
         else:
-            # print(type(obj))
-            # print(obj)
             assert isinstance(obj, (dict, list)) is True
             df = pd.DataFrame(obj)
-            # print(df,"fuck")
             return df

@@ -1,6 +1,6 @@
-from src.formatflick.engine.converter.text_engine import json_engine as jengine
-from src.formatflick.engine.converter.text_engine import csv_engine as cengine
-import src.formatflick.engine.global_var as var
+from .text_engine import json_engine as jengine
+from .text_engine import csv_engine as cengine
+from ..global_var import *
 
 
 class Core_engine:
@@ -13,8 +13,8 @@ class Core_engine:
 
         self.source = source  # get the source
         # self.destination = destination
-        self.mode = kwargs.get("mode", var.FILE_MODE)  # get the mode
-        if self.mode == var.FILE_MODE:
+        self.mode = kwargs.get("mode", FILE_MODE)  # get the mode
+        if self.mode == FILE_MODE:
             # for file mode
             self.destination = kwargs.get("destination", None)
             if self.destination is None:
@@ -156,7 +156,7 @@ class Core_engine:
         pass
 
     def __del__(self):
-        if self.mode == var.FILE_MODE:
+        if self.mode == FILE_MODE:
             self.log.log_process_completion(destination=self.destination)
         else:
             self.log.log_process_completion(destination=self.extension)

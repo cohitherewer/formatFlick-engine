@@ -7,7 +7,7 @@ This file contains all necessary functions to modify a json object
 """
 
 import json
-import src.formatflick.engine.global_var as var
+from ...global_var import *
 
 
 def read_json(file_path):
@@ -86,9 +86,9 @@ def json_engine_convert(destination, log, data, *args, **kwargs):
         - args: optional
         - kwargs: optional. Optionally expect indent parameter
     """
-    mode = kwargs.get("mode", var.FILE_MODE)
+    mode = kwargs.get("mode", FILE_MODE)
     data = data.to_json()  # added as dataframe is not json serializable
-    if mode != var.FILE_MODE:
+    if mode != FILE_MODE:
         return data
     indent = kwargs.get("indent", 2)
     with open(destination, 'w+') as file:
