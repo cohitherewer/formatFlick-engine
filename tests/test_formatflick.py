@@ -1,5 +1,5 @@
 import unittest
-from src.formatflick.formatflick import formatflick as ffe
+from formatflick.formatflick import formatflick as ffe
 # import pandas
 import os
 import re
