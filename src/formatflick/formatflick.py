@@ -1,9 +1,9 @@
 """Main module for Formatflick"""
-from src.formatflick.engine.handler import source as src
-from src.formatflick.engine.handler import destination as dst
-from src.formatflick.engine.converter import core
-from src.formatflick.engine.Logger_Config import create_logger
-import src.formatflick.engine.global_var as var
+from .engine.handler import source as src
+from .engine.handler import destination as dst
+from .engine.converter import core
+from .engine.Logger_Config import create_logger
+impo
 import time
 
 
@@ -48,12 +48,15 @@ class formatflick:
                                            mode=self.mode
                                            )
         self.function_call_map = {
+            #  source file is json
             (".json", ".csv"): self.engine.json_to_csv,
+            (".json", ".tsv"): self.engine.json_to_tsv,
+            # source file is .csv
             (".csv", ".json"): self.engine.csv_to_json,
             (".csv", ".tsv"): self.engine.csv_to_tsv,
+            # source file is .tsv
             (".tsv", ".csv"): self.engine.tsv_to_csv,
             (".tsv", ".json"): self.engine.tsv_to_json,
-            (".json", ".tsv"): self.engine.json_to_tsv
         }
 
     def convert(self):
