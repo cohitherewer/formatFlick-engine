@@ -5,12 +5,11 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "formatflick"
 dependencies = [
-    "python > 3.11",
     "pandas >= 2.1.4",
     "lxml >= 5.1.0",
     "dask >= 2024.1.0"
 ]
-requires-python=">=3.11"
+requires-python=">=3.9"
 version="0.1.4"
 authors = [{name = "Abhinaba Chakraborty", email = "abhinabacr4@gmail.com"}]
 maintainers = [{name="Abhinaba Chakraborty", email ="abhinabacr4@gmail.com"}]
