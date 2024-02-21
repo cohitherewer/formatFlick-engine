@@ -2,7 +2,6 @@ import unittest
 from formatflick.formatflick import formatflick as ffe
 # import pandas
 import os
-import re
 
 PATH = os.path.join(os.getcwd(), "sample_files")
 

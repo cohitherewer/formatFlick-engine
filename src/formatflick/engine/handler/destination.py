@@ -1,5 +1,6 @@
 import os
 from .util import *
+from ..global_var import *
 
 
 class DestinationFile_handler:
@@ -10,16 +11,17 @@ class DestinationFile_handler:
         - if it does not exist raise exception
     - the file is csv, xml or json or not
     """
+
     def __init__(self, destination, dst_extension, log, *args, **kwargs):
         # print(kwargs)
-        self.mode = kwargs.get("mode", "file")
+        self.mode = kwargs.get("mode", FILE_MODE)
         self.log = log
-        if self.mode == "file":
+        if self.mode == FILE_MODE:
             if not (destination or dst_extension):
                 raise Exception("Either destination or destination_extension should be given.")
             self.destination = destination if destination is not None else (
-                os.path.join(os.getcwd(), 'result' + dst_extension))
-            self.destination_file = destination if destination is not None else 'result'+dst_extension
+                os.path.join(os.getcwd(), RESULT_FILE + dst_extension))
+            self.destination_file = destination if destination is not None else 'result' + dst_extension
             self.extension = self.get_extension()
             self.validate_extension()
         else:

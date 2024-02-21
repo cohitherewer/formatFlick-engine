@@ -1,7 +1,7 @@
 """This file is for validation of the source file"""
 import os
 from .util import *
-
+from ..global_var import *
 
 class SourceFile_handler:
     """
@@ -75,7 +75,7 @@ class SourceFile_handler:
             raise FileNotFoundError()
 
     def validate_file(self):
-        if self.extension == ".json":
+        if self.extension == JSON:
             self.log.log_validating_file_encoding(self.source)
             u, v = validate_json(self.source)
             if u:
@@ -85,20 +85,24 @@ class SourceFile_handler:
                 self.log.log_invalid_file_encoding(self.source)
                 raise Exception
 
-        elif self.extension == ".xml":
+        elif self.extension == XML:
             self.log.log_validating_file_encoding(self.source)
             u, v = validate_xml(self.source)
             if u:
-                self.log.log.validated_file_encoding(self.source)
+                self.log.log_validated_file_encoding(self.source)
                 self.object = v.getroot()
             else:
                 self.log.log_invalid_extension_error(self.source)
                 raise Exception(f"{v}")
 
-        elif self.extension == ".csv" or self.extension == ".tsv":
+        elif self.extension == CSV or self.extension == TSV:
             self.log.log_custom_message(msg=f"Skipping the File Validation for {self.source}")
             # self.object = pd.read_csv(self.source)
 
-        elif self.extension == ".html":
+        elif self.extension == HTML:
             self.log.log_validating_file_encoding(self.source)
-            pass
+            if validate_html(file_path=self.source):
+                self.log.log_validated_file_encoding(self.source)
+            else:
+                self.log.log_invalid_file_encoding(self.source)
+
