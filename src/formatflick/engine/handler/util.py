@@ -1,8 +1,9 @@
 import json
 import os.path
 import xml.etree.ElementTree as ET
-from ..global_var import *
+from formatflick.global_var import *
 from html5validate import validate
+
 
 # VALID_EXTENSIONS = [".csv", ".json", ".tsv", ".html"]
 
@@ -66,3 +67,8 @@ def validate_html(file_path):
             content = content[0]
         validate(content)
         return True
+
+
+def validate_xlsx(file_path):
+    """utility function to validate an excel file"""
+    pass

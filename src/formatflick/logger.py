@@ -10,12 +10,14 @@ log_level_map = {
 }
 
 
-class create_logger:
+class logger:
     """
     Logger class used in the entire class of formatflick.It defined the logger level and several methods for logging
     the message.
     """
-    def __init__(self, verb, *args, **kwargs):
+    def __init__(self,
+                 verb: int
+                 , *args, **kwargs):
         """
         Initializes the logger class for the entire module
         Input:

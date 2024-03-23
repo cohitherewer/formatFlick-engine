@@ -1,25 +1,11 @@
-"""Main module for Formatflick"""
-from .engine.handler import source as src
-from .engine.handler import destination as dst
-from .engine.converter import core
-from .engine.Logger_Config import create_logger
-from .engine.global_var import *
-import time
+from flick import *
 
-class formatflick:
-    """
-    Initializes an instance of the formatflick class with the provided source and destination paths.
-    Parameters:
-    - source (str): The source path for the module.
-    - destination (str, optional): The destination path for the operation.
-        If not provided, the current working directory is used.
-    - *args: Additional positional arguments.
-    - **kwargs: Additional keyword arguments.
-    """
 
-    def __init__(self, source, destination=None,
-                 destination_extension=None,
-                 *args, **kwargs):
+class formatflick(flick):
+    """"""
+
+    def __init__(self, source: Path, destination: Path = None, destination_extension: str = None, verbosity: int = None,
+                 mode: str = FILE_MODE, *args, **kwargs):
         """
         Initialises as instance of formatflick class with the provided source and some optional parameters:
         Right now this module operates two modes => 'file' and 'nfile'
@@ -47,13 +33,19 @@ class formatflick:
             The values are consistent with the python logging module;
             By default, it is set to 3
         """
-        self.mode = kwargs.get("mode", FILE_MODE)
-        self.source = source
-        self.destination = destination
-        self.destination_extension = destination_extension
+        super().__init__(source, destination, destination_extension, verbosity, mode, *args, **kwargs)
 
-        verb = kwargs.get("verbosity", 3)
-        self.log = create_logger(verb)
+        # for formatflick the default behavior is FILE_MODE
+
+        if self.mode is None:
+            self.mode = FILE_MODE
+
+        # Check the source file is valid or not
+        self.check_source_validity()
+
+        # check the destination file, extensions are valid or not
+        self.check_destination_validity()
+
         self.source_obj = src.SourceFile_handler(source=self.source, log=self.log, args=args, kwargs=kwargs)
 
         # mode = kwargs.get("mode", var.FILE_MODE)
@@ -79,19 +71,87 @@ class formatflick:
             (".json", ".csv"): self.engine.json_to_csv,
             (".json", ".tsv"): self.engine.json_to_tsv,
             (".json", ".html"): self.engine.json_to_html,
+            (".json", ".xlsx"): self.engine.json_to_xlsx,
             # source file is .csv
             (".csv", ".json"): self.engine.csv_to_json,
             (".csv", ".tsv"): self.engine.csv_to_tsv,
             (".csv", ".html"): self.engine.csv_to_html,
+            (".csv", ".xlsx"): self.engine.csv_to_xlsx,
             # source file is .tsv
             (".tsv", ".csv"): self.engine.tsv_to_csv,
             (".tsv", ".json"): self.engine.tsv_to_json,
             (".tsv", ".html"): self.engine.tsv_to_html,
+            (".tsv", ".xlsx"): self.engine.tsv_to_xlsx,
             # source file is .html
             (".html", ".csv"): self.engine.html_to_csv,
             (".html", ".json"): self.engine.html_to_json,
             (".html", ".tsv"): self.engine.html_to_tsv,
+            (".html", ".xlsx"): self.engine.json_to_xlsx,
+            # source file is xlsx
+            (".xlsx", ".csv"): self.engine.xlsx_to_csv,
+            (".xlsx", ".json"): self.engine.xlsx_to_json,
+            (".xlsx", ".tsv"): self.engine.xlsx_to_tsv,
+            (".xlsx", ".html"): self.engine.xlsx_to_html,
         }
+
+    def check_source_validity(self) -> None:
+        """
+        Utility function to check if the source is valid or not
+        In this function the followings are checked
+        - source file path exists or not
+        - If exists check is the source extension is valid extension or not
+
+        """
+        # Check if the Source is valid or not
+        #
+        if not os.path.exists(self.source):
+            raise Exception("The source path dont exits")
+        self.source_extension = super().get_file_extension(self.source)
+        if not self.is_valid_file_extension(self.source_extension):
+            raise Exception(
+                f"{self.source} do not have the valid extension"
+            )
+
+    def check_destination_validity(self) -> None:
+        """
+        Utility function to check if the destination file is valid or not
+        Depending on the file_mode we decide what to do
+        If file_mode:
+            In this function, the following logic is implemented,
+            - If destination and destination path both are none, raise an exception
+            - If destination is None
+                - check for destination_extension. If it is not a valid extension, raise an exception
+                - if it is a valid exception, destination file name would be "result" and form the destination file path
+
+        If nfile_mode:
+            If the destination_extension is None we will raise Exception.
+            Destination Path will be ignored
+        """
+        if self.is_file_mode():
+            # Check if the destination and destination_extension both are none or not
+            if self.destination is None and self.destination_extension is None:
+                raise Exception("destination and destination_extension both cannot be None.")
+            # At this point, one of them is not none
+            # to Consider self.destination is None
+            if self.destination is None:
+                # Check self.destination_extension is a valid destination of not
+                is_valid = super().is_valid_file_extension(self.destination_extension)
+                if is_valid:
+                    # form the destination file path, with "results" name
+                    self.destination = os.path.join(os.getcwd(), "result", self.destination_extension)
+            else:
+                # At this point, the self.destination is not none
+                self.destination_extension = self.get_file_extension(self.destination)
+                # The destination extension returned contains "." as prefix
+                if not self.is_valid_file_extension(self.destination_extension):
+                    raise Exception(
+                        f"{self.destination_extension} is not valid. The valid extensions are {VALID_EXTENSIONS}"
+                    )
+        else:
+            if self.destination_extension is None:
+                raise Exception("destination_extension cannot be None for nfile mode")
+            else:
+                _ = super().is_valid_file_extension(self.destination_extension)
 
     def convert(self):
         """

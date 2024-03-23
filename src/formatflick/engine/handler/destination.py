@@ -1,6 +1,6 @@
 import os
 from .util import *
-from ..global_var import *
+from formatflick.global_var import *
 
 
 class DestinationFile_handler:

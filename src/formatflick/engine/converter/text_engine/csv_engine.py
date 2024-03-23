@@ -41,7 +41,7 @@ efficient data manipulation and analysis in the context of structured text-based
 """
 import csv
 import pandas as pd
-from ...global_var import *
+from formatflick.global_var import *
 
 
 def deflatten_csv_util(d, parent_key='', sep='.'):
@@ -101,7 +101,7 @@ def deflatten_csv(df, sep='.'):
 
 
 def read_csv(file_path, delimiter):
-    """reading csv file"""
+    """reading csv or tsv file based on delimiter"""
     df = pd.read_csv(file_path, delimiter=delimiter)
     return df
 
@@ -129,7 +129,7 @@ def csv_engine_convert(destination, obj, log, *args, **kwargs):
     """
     csv convert engine will work in two mode
     - file mode => write the entire resultant data into a file
-    - non file mode => return the entire resultant object into a file
+    - non file mode => return the entire resultant object into a suitable object
     """
     mode = kwargs.get("mode", FILE_MODE)
     if mode == FILE_MODE:

@@ -7,7 +7,7 @@ This file contains all necessary functions to modify a json object
 """
 
 import json
-from ...global_var import *
+from formatflick.global_var import *
 
 
 def read_json(file_path):

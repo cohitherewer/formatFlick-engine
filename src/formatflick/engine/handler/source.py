@@ -1,7 +1,7 @@
 """This file is for validation of the source file"""
 import os
 from .util import *
-from ..global_var import *
+from formatflick.global_var import *
 
 class SourceFile_handler:
     """
@@ -13,19 +13,22 @@ class SourceFile_handler:
     """
 
     def __init__(self, source, log, *args, **kwargs):
+        # initiating source and log object
         self.source = source
         self.log = log
 
+        # check if the file path exists or not
         self.is_exists()
-
+        # get the file name
         self.source_file = None
         self.get_file_name()
-
+        # get the extension
         self.extension = None
         self.get_extension()
-
+        # check the extension is valid or not
         self.validate_extension()
-
+        # validate the file encoding
+        # for some file formats it will be ignored
         self.object = None
         self.validate_file()
 
@@ -95,9 +98,8 @@ class SourceFile_handler:
                 self.log.log_invalid_extension_error(self.source)
                 raise Exception(f"{v}")
 
-        elif self.extension == CSV or self.extension == TSV:
+        elif self.extension in [CSV, TSV, XLSX]:
             self.log.log_custom_message(msg=f"Skipping the File Validation for {self.source}")
-            # self.object = pd.read_csv(self.source)
 
         elif self.extension == HTML:
             self.log.log_validating_file_encoding(self.source)
@@ -105,4 +107,11 @@ class SourceFile_handler:
                 self.log.log_validated_file_encoding(self.source)
             else:
                 self.log.log_invalid_file_encoding(self.source)
+
+        # elif self.extension == XLSX:
+        #     self.log.log_validating_file_encoding(self.source)
+        #     if validate_xlsx(file_path=self.source):
+        #         self.log.log_validated_file_encoding(self.source)
+        #     else:
+        #         self.log.log_invalid_file_encoding(self.source)
 

@@ -1,6 +1,7 @@
 from .text_engine import json_engine as jengine
 from .text_engine import csv_engine as cengine
-from ..global_var import *
+from .text_engine import xlsx_engine as xengine
+from formatflick.global_var import *
 
 
 class Core_engine:
@@ -53,6 +54,24 @@ class Core_engine:
                                                 destination=self.extension)
             self.t_dst = self.extension
 
+    # #################################
+    # SOURCE FILE: JSON
+    # #################################
+    def json_to_tsv(self):
+        """handles json to tsv file conversion"""
+        flatten_obj, headers = jengine.json_engine_handle(self.source, self.log)
+        obj = cengine.csv_engine_convert(destination=self.t_dst,
+                                         obj=flatten_obj,
+                                         sep='\t',
+                                         extension=".json",
+                                         log=self.log,
+                                         headers=headers,
+                                         newline='',
+                                         encoding='utf-8',
+                                         mode=self.mode
+                                         )
+        return obj
+
     def json_to_csv(self):
         """handles json to csv file conversion"""
         flatten_obj, headers = jengine.json_engine_handle(self.source, self.log)
@@ -67,6 +86,16 @@ class Core_engine:
                                          mode=self.mode
                                          )
         return obj
+
+    def json_to_html(self):
+        pass
+
+    def json_to_xlsx(self):
+        pass
+
+    # #################################
+    # SOURCE FILE: CSV
+    # #################################
 
     def csv_to_json(self):
         """handles csv to json file conversion"""
@@ -93,6 +122,15 @@ class Core_engine:
                                          )
         return obj
 
+    def csv_to_xlsx(self):
+        pass
+
+    def csv_to_html(self):
+        pass
+
+    # #################################
+    # SOURCE FILE: TSV
+    # #################################
     def tsv_to_csv(self):
         """handles tsv to csv file conversion"""
         df = cengine.csv_engine_handle(self.source, extension=".tsv", log=self.log)
@@ -106,27 +144,21 @@ class Core_engine:
                                          )
         return obj
 
-    def json_to_tsv(self):
-        """handles json to tsv file conversion"""
-        flatten_obj, headers = jengine.json_engine_handle(self.source, self.log)
-        obj = cengine.csv_engine_convert(destination=self.t_dst,
-                                         obj=flatten_obj,
-                                         sep='\t',
-                                         extension=".json",
-                                         log=self.log,
-                                         headers=headers,
-                                         newline='',
-                                         encoding='utf-8',
-                                         mode=self.mode
-                                         )
-        return obj
-
     def tsv_to_json(self):
         """handles tsv to json file conversion"""
         df = cengine.csv_engine_handle(self.source, extension=".tsv", log=self.log)
         obj = jengine.json_engine_convert(self.t_dst, self.log, data=df, index=2, mode=self.mode)
         return obj
 
+    def tsv_to_html(self):
+        pass
+
+    def tsv_to_xlsx(self):
+        pass
+
+    # #################################
+    # SOURCE FILE: HTML
+    # #################################
     def html_to_json(self):
         pass
 
@@ -136,13 +168,24 @@ class Core_engine:
     def html_to_tsv(self):
         pass
 
-    def json_to_html(self):
+    def html_to_xlsx(self):
         pass
 
-    def csv_to_html(self):
+    # #################################
+    # SOURCE FILE: XLSX
+    # #################################
+    def xlsx_to_csv(self):
+        df = xengine.xlsx_engine_handle(source=self.source, log=self.log)
+        return None
+
+    def xlsx_to_tsv(self):
         pass
 
-    def tsv_to_html(self):
+    def xlsx_to_json(self):
+        df = xengine.xlsx_engine_handle(source=self.source,log=self.log, extension=".json")
+        return None
+
+    def xlsx_to_html(self):
         pass
 
     def custom_convert(self):

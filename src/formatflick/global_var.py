@@ -14,5 +14,6 @@ JSON = ".json"
 TSV = ".tsv"
 HTML = ".html"
 XML = ".xml"
+XLSX = ".xlsx"
 
-VALID_EXTENSIONS = [CSV, JSON, TSV, HTML, XML]
+VALID_EXTENSIONS = [CSV, JSON, TSV, HTML, XML, XLSX]
