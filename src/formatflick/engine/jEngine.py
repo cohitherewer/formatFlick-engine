@@ -1,6 +1,6 @@
 from typing import Tuple, List, Any
 
-from engine import engine
+from engine import engine, dest_engine
 from pathlib import Path
 import json
 import pandas as pd
@@ -88,12 +88,14 @@ class jEngine(engine):
                 sub_element.text = str(value)
         return ET.tostring(root)
 
-    def to_destination(self, obj,
-                       destination,
-                       unflatten=False
-                       ):
+
+class dest_jEngine(dest_engine):
+    def __init__(self, obj, destination, *args, **kwargs):
+        super().__init__(obj, destination, *args, kwargs)
+
+    def to_destination(self):
         """
         Will get a json object and convert that to a destination file
         """
-        with open(destination, 'w') as dest:
-            json.dump(obj, dest)
+        with open(self.destination, 'w') as dest:
+            json.dump(self.obj, dest)

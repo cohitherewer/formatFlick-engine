@@ -31,17 +31,24 @@ class engine:
     def to_xlsx(obj):
         pass
 
-    def to_json(self):
+    @staticmethod
+    def to_json(obj):
         pass
 
     @staticmethod
-    def to_xml(obj):
+    def to_xml(obj, root=None):
         pass
 
-    def to_destination(self, obj, destination):
+
+class dest_engine:
+    def __init__(self, obj, destination,*args,**kwargs):
+        self.obj = obj
+        self.destination = destination
+        self.kwargs = kwargs
+
+    def to_destination(self):
         """
         Occasionally used when we have to convert that into a destination file
         Also depends on different file formats
         """
         pass
-
