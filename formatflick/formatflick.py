@@ -1,12 +1,16 @@
-from flick import *
-from engine.xEngine import xEngine, dest_xEngine
-from engine.jEngine import jEngine, dest_jEngine
-from engine.cEngine import cEngine, dest_cEngine
+from .flick import *
+from .engine.xEngine import xEngine, dest_xEngine
+from .engine.jEngine import jEngine, dest_jEngine
+from .engine.cEngine import cEngine, dest_cEngine
 
 
 class formatflick(flick):
-    def __init__(self, source: Path, destination: Path = None, destination_extension: str = None, verbosity: int = None,
-                 mode: str = FILE_MODE, *args, **kwargs):
+    def __init__(self,
+                 source,
+                 destination=None,
+                 destination_extension: str = None,
+                 verbosity: int = None,
+                 *args, **kwargs):
         """
         Initialises as instance of formatflick class with the provided source and some optional parameters:
         Right now this module operates two modes => 'file' and 'nfile'
@@ -34,7 +38,11 @@ class formatflick(flick):
             The values are consistent with the python logging module;
             By default, it is set to 3
         """
-        super().__init__(source, destination, destination_extension, verbosity, mode, *args, **kwargs)
+        super().__init__(source=source,
+                         destination=destination,
+                         destination_extension=destination_extension,
+                         verbosity=verbosity,
+                         *args, **kwargs)
 
         # for formatflick the default behavior is FILE_MODE
 
@@ -89,7 +97,7 @@ class formatflick(flick):
                 raise Exception("destination and destination_extension both cannot be None.")
             # At this point, one of them is not none
             # to Consider self.destination is None
-            if self.destination is None:
+            elif self.destination is None:
                 # Check self.destination_extension is a valid destination of not
                 is_valid = super().is_valid_file_extension(self.destination_extension)
                 if is_valid:
@@ -178,9 +186,9 @@ class formatflick(flick):
         if self.mode == FILE_MODE:
             d_engine = None
             if self.destination_extension in [CSV,TSV, XLSX]:
-                d_engine = dest_cEngine(d_obj,self.destination, destination_extension=self.destination_extension)
+                d_engine = dest_cEngine(d_obj, self.destination, destination_extension=self.destination_extension)
             elif self.destination_extension == JSON:
-                d_engine = dest_jEngine(d_obj,self.destination)
+                d_engine = dest_jEngine(d_obj, self.destination)
             elif self.destination_extension == XML:
                 d_engine = dest_xEngine(d_obj, self.destination)
 

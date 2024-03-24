@@ -1,29 +1,28 @@
-from pathlib import Path
 import os
 
-from global_var import *
-import logger as log
+from .global_var import *
+from .logger import *
 
 
 class flick:
     def __init__(self,
-                 source: Path,
-                 destination: Path = None,
+                 source,
+                 destination=None,
                  destination_extension: str = None,
                  verbosity: int = None,
                  *args, **kwargs
                  ):
-        self.source: Path = source
+        self.source = source
         self.source_extension: str = ""
-        self.destination: Path = destination
+        self.destination = destination
         self.destination_extension: str = destination_extension
         self.verbosity: int = verbosity
 
         self.mode = kwargs.get("mode", None)
-        self.log = log.logger(verbosity)
+        # self.log = log.logger(verbosity)
 
     @staticmethod
-    def get_file_extension(file_path: Path) -> str:
+    def get_file_extension(file_path) -> str:
         """
         Static method to find out the extension of the given file
         Input:
@@ -43,7 +42,7 @@ class flick:
         Output:
         -Boolean value[true/false]
         """
-        if extension in VALID_EXTENSIONS:
+        if extension not in VALID_EXTENSIONS:
             raise Exception(
                 f"{extension} is not valid. The valid extensions are {VALID_EXTENSIONS}"
             )
@@ -51,6 +50,7 @@ class flick:
 
     def is_file_mode(self) -> bool:
         return self.mode == FILE_MODE
+
     def check_source_validity(self):
         pass
 

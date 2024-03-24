@@ -5,6 +5,7 @@ import pytest
 from formatflick.engine import cEngine
 import pandas as pd
 
+
 def build_cEngine(ext):
     file = os.path.join(os.getcwd(), "tests", "sample_files", "sample" + ext)
     engine = cEngine.cEngine(source=file, mode='file_mode', source_extension=ext)
@@ -12,14 +13,14 @@ def build_cEngine(ext):
 
 
 def test_read_file():
-    for ext in [".csv", ".tsv",".xlsx"]:
+    for ext in [".csv", ".tsv", ".xlsx"]:
         engine = build_cEngine(ext)
         data = engine.read_file()
         assert isinstance(data, pd.DataFrame)
 
 
 def test_to_json():
-    for ext in [".csv", ".tsv",".xlsx"]:
+    for ext in [".csv", ".tsv", ".xlsx"]:
         engine = build_cEngine(ext)
         obj = engine.read_file()
         json_data = cEngine.cEngine.to_json(obj)
@@ -27,7 +28,7 @@ def test_to_json():
 
 
 def test_to_xml():
-    for ext in [".csv", ".tsv",".xlsx"]:
+    for ext in [".csv", ".tsv", ".xlsx"]:
         engine = build_cEngine(ext)
         obj = engine.read_file()
         xml_data = cEngine.cEngine.to_xml(obj)

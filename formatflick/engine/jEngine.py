@@ -1,6 +1,6 @@
 from typing import Tuple, List, Any
 
-from engine import engine, dest_engine
+from .engine import engine, dest_engine
 from pathlib import Path
 import json
 import pandas as pd
