@@ -18,7 +18,7 @@ class cEngine(engine):
             raise Exception("Please give source extension for cEngine")
 
     def read_file(self) -> Any:
-        if self.ext == "xlsx":
+        if self.ext == ".xlsx":
             return pd.read_excel(self.source)
         delimiter = ','
         if self.ext == ".tsv":
