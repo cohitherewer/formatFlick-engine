@@ -3,6 +3,8 @@ from .engine.xEngine import xEngine, dest_xEngine
 from .engine.jEngine import jEngine, dest_jEngine
 from .engine.cEngine import cEngine, dest_cEngine
 
+from progress.bar import Bar
+
 
 class formatflick(flick):
     def __init__(self,
@@ -102,7 +104,7 @@ class formatflick(flick):
                 is_valid = super().is_valid_file_extension(self.destination_extension)
                 if is_valid:
                     # form the destination file path, with "results" name
-                    self.destination = os.path.join(os.getcwd(), "result", self.destination_extension)
+                    self.destination = os.path.join(os.getcwd(), "result"+self.destination_extension)
             else:
                 # At this point, the self.destination is not none
                 self.destination_extension = super().get_file_extension(self.destination)
@@ -177,6 +179,7 @@ class formatflick(flick):
         d_obj = None
         if self.destination_extension in [CSV, TSV, XLSX]:
             d_obj = obj.to_csv()
+            print(type(d_obj))
         elif self.destination_extension == JSON:
             d_obj = obj.to_json()
         elif self.destination_extension == XML:

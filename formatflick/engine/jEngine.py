@@ -105,5 +105,6 @@ class dest_jEngine(dest_engine):
         """
         Will get a json object and convert that to a destination file
         """
-        with open(self.destination, 'w') as dest:
-            json.dump(self.obj, dest)
+        self.obj = json.loads(self.obj)
+        with open(self.destination, 'w+') as dest:
+            json.dump(self.obj, dest, indent=4)
