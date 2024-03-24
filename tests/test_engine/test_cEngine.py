@@ -23,7 +23,7 @@ def test_to_json():
     for ext in [".csv", ".tsv", ".xlsx"]:
         engine = build_cEngine(ext)
         obj = engine.read_file()
-        json_data = cEngine.cEngine.to_json(obj)
+        json_data = engine.to_json(obj)
         assert {'a': ['a-1', 'a-2', 'a-3'], 'b': ['b-1', 'b-2', 'b-3'], 'c': ['c-1', 'c-2', 'c-3']} == json_data
 
 

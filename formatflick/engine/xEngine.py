@@ -1,4 +1,5 @@
 from .engine import engine, dest_engine
+from .jEngine import jEngine
 from pathlib import Path
 # import xml.etree.ElementTree as ET
 import xmltodict
@@ -28,16 +29,19 @@ class xEngine(engine):
     @staticmethod
     def to_csv(obj):
         # need to flatten
-        data = []
-        for key, value in obj.items():
-            if isinstance(value, list):
-                for item in value:
-                    data.append(item)
-            else:
-                data.append(value)
+        flat_obj = jEngine.flatten_json_util(obj, '_', 0)
+
+        # data = []
+        # for key, value in flat_obj.items():
+        #     if isinstance(value, list):
+        #         for item in value:
+        #             data.append(item)
+        #     else:
+        #         data.append(value)
 
         # Create DataFrame
-        df = pd.DataFrame(data)
+        df = pd.DataFrame([flat_obj])
+        print(df)
         return df
 
     @staticmethod
@@ -48,10 +52,11 @@ class xEngine(engine):
     def to_xlsx(obj):
         return xEngine.to_csv(obj)
 
+
 class dest_xEngine(dest_engine):
-    def __init__(self,obj, destination, *args, **kwargs):
+    def __init__(self, obj, destination, *args, **kwargs):
         super().__init__(obj, destination, *args, **kwargs)
 
     def to_destination(self):
-        with open(self.destination,"w") as dest:
+        with open(self.destination, "w") as dest:
             dest.write(self.obj)
