@@ -1,7 +1,6 @@
 from typing import Tuple, List, Any
 
-from engine import engine, dest_engine
-from pathlib import Path
+from .engine import engine, dest_engine
 import json
 import pandas as pd
 import xml.etree.ElementTree as ET
@@ -9,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 class cEngine(engine):
     def __init__(self,
-                 source: Path,
+                 source,
                  mode: str,
                  *args, **kwargs
                  ):
@@ -36,7 +35,7 @@ class cEngine(engine):
             root = "Result"
         root = ET.Element(root)
         for i, row in obj.iterrows():
-            row_element = ET.SubElement(root, 'row')
+            row_element = ET.SubElement(root, f'{i+1}')
             for col_name, col_value in row.items():
                 col_element = ET.SubElement(row_element, col_name)
                 col_element.text = str(col_value)
