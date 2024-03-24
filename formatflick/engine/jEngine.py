@@ -1,4 +1,4 @@
-from typing import Tuple, List, Any
+from typing import Tuple, List, Any, Union, Dict
 
 from .engine import engine, dest_engine
 from pathlib import Path
@@ -15,7 +15,7 @@ class jEngine(engine):
                  ):
         super().__init__(source, mode, args, kwargs)
 
-    def read_file(self) -> tuple[list[Any], list[Any]]:
+    def read_file(self) -> Union[tuple[list[Any], list[dict[Any, Any]]], tuple[None, Any]]:
         """
         Reading the JSON file.
         We are using json module of python to read the data.
@@ -25,23 +25,31 @@ class jEngine(engine):
         """
         with open(self.source) as json_file:
             obj = json.load(json_file)
+        if type(obj) is dict:
+            obj = [obj]
         flatten_obj = []
         for item in obj:
-            flatten_obj.append(flatten_obj(item))
+            flatten_obj.append(self.flatten_json(item))
         headers = list(set(key for entry in flatten_obj for key in entry.keys()))
         return headers, flatten_obj
 
     @staticmethod
-    def flatten_json_util(json_obj, prefix):
+    def flatten_json_util(json_obj, prefix, depth):
         flat_dict = {}
         if isinstance(json_obj, dict):
             for key, value in json_obj.items():
-                _key = f"{prefix}{key}"
-                flat_dict.update(jEngine.flatten_json_util(value, _key))
+                _key = f"{prefix}{key}" if depth!=0 else key
+                if isinstance(value, (dict, list)):
+                    flat_dict.update(jEngine.flatten_json_util(value, _key + '.',depth+1))
+                else:
+                    flat_dict[_key] = value
         elif isinstance(json_obj, list):
             for i, item in enumerate(json_obj):
-                _key = f"{prefix}{i}"
-                flat_dict.update(jEngine.flatten_json_util(item, _key))
+                _key = f"{prefix}{i}" if depth!=0 else i
+                if isinstance(item, (dict, list)):
+                    flat_dict.update(jEngine.flatten_json_util(item, f"{_key}.",depth+1))
+                else:
+                    flat_dict[_key] = item
         else:
             flat_dict[prefix[:-1]] = json_obj
         return flat_dict
@@ -51,7 +59,7 @@ class jEngine(engine):
         Flatten method for json objects
         """
         prefix = self.kwargs.get("prefix", '_')
-        return self.flatten_json_util(json_obj, prefix)
+        return self.flatten_json_util(json_obj, prefix, 0)
 
     @staticmethod
     def to_csv(obj):
@@ -99,4 +107,3 @@ class dest_jEngine(dest_engine):
         """
         with open(self.destination, 'w') as dest:
             json.dump(self.obj, dest)
-

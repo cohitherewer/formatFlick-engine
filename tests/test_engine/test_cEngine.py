@@ -8,7 +8,7 @@ import pandas as pd
 
 def build_cEngine(ext):
     file = os.path.join(os.getcwd(), "tests", "sample_files", "sample" + ext)
-    engine = cEngine.cEngine(source=file, mode='file_mode', source_extension=ext)
+    engine = cEngine.cEngine(source=file, mode='file', source_extension=ext)
     return engine
 
 
