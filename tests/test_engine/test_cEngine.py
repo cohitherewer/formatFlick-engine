@@ -1,9 +1,9 @@
 import os
 
 import pytest
-from src.formatflick.engine import cEngine
-import pandas as pd
 
+from formatflick.engine import cEngine
+import pandas as pd
 
 def build_cEngine(ext):
     file = os.path.join(os.getcwd(), "tests", "sample_files", "sample" + ext)

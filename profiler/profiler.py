@@ -1,8 +1,7 @@
 import os
 
 import randomcsv
-import randomjson
-from src.formatflick.formatflick import formatflick as ffe
+from formatflick import formatflick as ffe
 import time
 import matplotlib.pyplot as plt
 import numpy as np

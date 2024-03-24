@@ -13,14 +13,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
-          pip3 install --upgrade pip
-          pip3 install pandas
-          pip3 install pytest
+          python -m pip install --upgrade pip .
+          python -m pip install pandas .
+          python -m pip install pytest .
 
       - name: Unit Testing
-        run: |
-          pytest
+        run: pytest
