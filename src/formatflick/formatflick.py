@@ -1,9 +1,10 @@
 from flick import *
+from engine.xEngine import xEngine, dest_xEngine
+from engine.jEngine import jEngine, dest_jEngine
+from engine.cEngine import cEngine, dest_cEngine
 
 
 class formatflick(flick):
-    """"""
-
     def __init__(self, source: Path, destination: Path = None, destination_extension: str = None, verbosity: int = None,
                  mode: str = FILE_MODE, *args, **kwargs):
         """
@@ -46,53 +47,8 @@ class formatflick(flick):
         # check the destination file, extensions are valid or not
         self.check_destination_validity()
 
-        self.source_obj = src.SourceFile_handler(source=self.source, log=self.log, args=args, kwargs=kwargs)
-
-        # mode = kwargs.get("mode", var.FILE_MODE)
-        self.dst_obj = dst.DestinationFile_handler(destination=self.destination,
-                                                   dst_extension=self.destination_extension,
-                                                   log=self.log,
-                                                   mode=self.mode
-                                                   )
-        if self.mode == FILE_MODE:
-            self.engine = core.Core_engine(source=self.source_obj.source,
-                                           destination=self.dst_obj.destination,
-                                           log=self.log,
-                                           mode=self.mode
-                                           )
-        else:
-            self.engine = core.Core_engine(source=self.source_obj.source,
-                                           log=self.log,
-                                           extension=self.dst_obj.extension,
-                                           mode=self.mode
-                                           )
-        self.function_call_map = {
-            #  source file is json
-            (".json", ".csv"): self.engine.json_to_csv,
-            (".json", ".tsv"): self.engine.json_to_tsv,
-            (".json", ".html"): self.engine.json_to_html,
-            (".json", ".xlsx"): self.engine.json_to_xlsx,
-            # source file is .csv
-            (".csv", ".json"): self.engine.csv_to_json,
-            (".csv", ".tsv"): self.engine.csv_to_tsv,
-            (".csv", ".html"): self.engine.csv_to_html,
-            (".csv", ".xlsx"): self.engine.csv_to_xlsx,
-            # source file is .tsv
-            (".tsv", ".csv"): self.engine.tsv_to_csv,
-            (".tsv", ".json"): self.engine.tsv_to_json,
-            (".tsv", ".html"): self.engine.tsv_to_html,
-            (".tsv", ".xlsx"): self.engine.tsv_to_xlsx,
-            # source file is .html
-            (".html", ".csv"): self.engine.html_to_csv,
-            (".html", ".json"): self.engine.html_to_json,
-            (".html", ".tsv"): self.engine.html_to_tsv,
-            (".html", ".xlsx"): self.engine.json_to_xlsx,
-            # source file is xlsx
-            (".xlsx", ".csv"): self.engine.xlsx_to_csv,
-            (".xlsx", ".json"): self.engine.xlsx_to_json,
-            (".xlsx", ".tsv"): self.engine.xlsx_to_tsv,
-            (".xlsx", ".html"): self.engine.xlsx_to_html,
-        }
+        # check the validity of conversion
+        self.is_valid_conversion()
 
     def check_source_validity(self) -> None:
         """
@@ -141,7 +97,7 @@ class formatflick(flick):
                     self.destination = os.path.join(os.getcwd(), "result", self.destination_extension)
             else:
                 # At this point, the self.destination is not none
-                self.destination_extension = self.get_file_extension(self.destination)
+                self.destination_extension = super().get_file_extension(self.destination)
                 # The destination extension returned contains "." as prefix
                 if not self.is_valid_file_extension(self.destination_extension):
                     raise Exception(
@@ -152,6 +108,39 @@ class formatflick(flick):
                 raise Exception("destination_extension cannot be None for nfile mode")
             else:
                 _ = super().is_valid_file_extension(self.destination_extension)
+
+    def is_valid_conversion(self):
+        conversion_key = (self.source_extension, self.destination_extension)
+        function_call_map = [
+            #  source file is json
+            (".json", ".csv"),
+            (".json", ".tsv"),
+            (".json", ".xml"),
+            (".json", ".xlsx"),
+            # source file is .csv
+            (".csv", ".json"),
+            (".csv", ".tsv"),
+            (".csv", ".xml"),
+            (".csv", ".xlsx"),
+            # source file is .tsv
+            (".tsv", ".csv"),
+            (".tsv", ".json"),
+            (".tsv", ".xml"),
+            (".tsv", ".xlsx"),
+            # source file is .xml
+            (".html", ".csv"),
+            (".html", ".json"),
+            (".html", ".tsv"),
+            (".html", ".xlsx"),
+            # source file is xlsx
+            (".xlsx", ".csv"),
+            (".xlsx", ".json"),
+            (".xlsx", ".tsv"),
+            (".xlsx", ".xml")
+        ]
+        if conversion_key not in function_call_map:
+            raise Exception(f"The following conversion between {self.source_extension} and {self.destination_extension} is not allowed")
+        return conversion_key
 
     def convert(self):
         """
@@ -165,14 +154,37 @@ class formatflick(flick):
         we add an extra checks where all valid conversions will be mentioned In that it will be helpful to prevent an
         unwanted result and users can don't need to debug that yourselves.
         """
-        start_time = time.time()
-        conversion_key = (self.source_obj.extension, self.dst_obj.extension)
-        res = None
-        if conversion_key in self.function_call_map:
-            conversion_function = self.function_call_map[conversion_key]
-            res = conversion_function()
-        else:
-            self.log.log_unsupported_file_conversion_error(self.source_obj.extension, self.dst_obj.extension)
-        end_time = time.time()
-        self.log.log_time(end_time, start_time)
-        return res
+        _engine_ = None
+        # initialize the source object
+        if self.source_extension in [CSV,TSV,XLSX]:
+            _engine_ = cEngine(self.source,mode=self.mode,source_extension=self.source_extension)
+            # df = obj.read_file()
+        elif self.source_extension == JSON:
+            _engine_ = jEngine(self.source, mode=self.mode)
+        elif self.source_extension == XML:
+            _engine_ = xEngine(self.source,mode=self.mode)
+
+        # read the source file
+        obj = _engine_.read_file()
+        d_obj = None
+        if self.destination_extension in [CSV, TSV, XLSX]:
+            d_obj = obj.to_csv()
+        elif self.destination_extension == JSON:
+            d_obj = obj.to_json()
+        elif self.destination_extension == XML:
+            d_obj = obj.to_xml()
+
+        # convert to destination object
+        if self.mode == FILE_MODE:
+            d_engine = None
+            if self.destination_extension in [CSV,TSV, XLSX]:
+                d_engine = dest_cEngine(d_obj,self.destination, destination_extension=self.destination_extension)
+            elif self.destination_extension == JSON:
+                d_engine = dest_jEngine(d_obj,self.destination)
+            elif self.destination_extension == XML:
+                d_engine = dest_xEngine(d_obj, self.destination)
+
+            # convert to destination obj
+            d_engine.to_destination()
+
+        return d_obj

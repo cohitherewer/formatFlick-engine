@@ -23,7 +23,7 @@ class flick:
         self.log = log.logger(verbosity)
 
     @staticmethod
-    def c(file_path: Path) -> str:
+    def get_file_extension(file_path: Path) -> str:
         """
         Static method to find out the extension of the given file
         Input:
