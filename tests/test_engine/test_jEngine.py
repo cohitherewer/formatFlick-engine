@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 import pytest
 from formatflick.engine import jEngine
@@ -47,3 +46,12 @@ def test_to_xml():
     headers, data = engine.read_file()
     df = engine.to_xml(data)
     assert b'<Result><a>b</a><c.d.0>a</c.d.0><c.d.1>b</c.d.1><c.e.f>f-1</c.e.f></Result>' == df
+
+
+def test_to_destination():
+    json_data = '{"name": "John", "age": 30, "city": "New York"}'
+    destination = os.path.join(os.getcwd(), "tests", "sample_files", "result.json")
+    d_engine = jEngine.dest_jEngine(json_data, destination)
+    d_engine.to_destination()
+    assert os.path.exists(destination)
+    os.remove(destination)

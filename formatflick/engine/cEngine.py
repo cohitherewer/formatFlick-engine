@@ -41,8 +41,8 @@ class cEngine(engine):
 
 
 class dest_cEngine(dest_engine):
-    def __int__(self, obj, destination, *args, **kwargs):
-        super().__init__(obj, destination, *args, **kwargs)
+    def __init__(self, obj, destination, *args, **kwargs):
+        super().__init__(obj, destination, args, kwargs)
         self.dest_extension = kwargs.get("destination_extension", None)
         if self.dest_extension is None:
             raise Exception(f"Please destination_extension in dest_cEngine")
