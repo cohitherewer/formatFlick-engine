@@ -1,4 +1,4 @@
-name: Unit Testing
+name: Testing
 
 on:
   push:
@@ -6,8 +6,20 @@ on:
       - '*'
 
 jobs:
-  publish:
-    runs-on: macos-latest
+  run-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12-dev"
+          - "pypi-3.9"
+
+    name: Test
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -16,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: ${{ matrix.python-version }}
 
       - name: Create and activate virtual environment
         run: |
@@ -26,11 +38,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pandas==1.3.3 pytest==6.2.5 xmltodict==0.12.0
+          python -m pip install pandas 
+          python -m pip install pytest
+          python -m pip install xmltodict
           python -m pip install openpyxl
-
-      - name: Check for test files
-        run: ls -R
 
       - name: Unit Testing
         run: pytest
