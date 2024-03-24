@@ -16,7 +16,7 @@ jobs:
           - "3.10"
           - "3.11"
           - "3.12-dev"
-          - "pypi-3.9"
+          - "pypy-3.9"
 
     name: Test
     runs-on: ${{ matrix.os }}
@@ -29,11 +29,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Create and activate virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+#
+#      - name: Create and activate virtual environment
+#        run: |
+#          python -m venv venv
+#          source venv/bin/activate
 
       - name: Install dependencies
         run: |
