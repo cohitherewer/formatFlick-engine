@@ -3,8 +3,6 @@ from .engine.xEngine import xEngine, dest_xEngine
 from .engine.jEngine import jEngine, dest_jEngine
 from .engine.cEngine import cEngine, dest_cEngine
 
-from progress.bar import Bar
-
 
 class formatflick(flick):
     def __init__(self,
@@ -176,14 +174,15 @@ class formatflick(flick):
 
         # read the source file
         obj = _engine_.read_file()
+        if self.source_extension == JSON:
+            obj = obj[1]
         d_obj = None
         if self.destination_extension in [CSV, TSV, XLSX]:
-            d_obj = obj.to_csv()
-            print(type(d_obj))
+            d_obj = _engine_.to_csv(obj)
         elif self.destination_extension == JSON:
-            d_obj = obj.to_json()
+            d_obj = _engine_.to_json(obj)
         elif self.destination_extension == XML:
-            d_obj = obj.to_xml()
+            d_obj = _engine_.to_xml(obj)
 
         # convert to destination object
         if self.mode == FILE_MODE:

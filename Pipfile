@@ -8,8 +8,10 @@ xmltodict = "*"
 pytest = "*"
 pandas = "*"
 bump2version = "*"
+formatflick = {file = "."}
 
 [dev-packages]
+ipykernel = "*"
 
 [requires]
 python_version = "3.11"

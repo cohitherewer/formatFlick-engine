@@ -105,6 +105,9 @@ class dest_jEngine(dest_engine):
         """
         Will get a json object and convert that to a destination file
         """
-        self.obj = json.loads(self.obj)
+        try:
+            self.obj = json.loads(self.obj)
+        except Exception as err:
+            print("Some Error occurred during json.loads. Ignoring...")
         with open(self.destination, 'w+') as dest:
             json.dump(self.obj, dest, indent=4)

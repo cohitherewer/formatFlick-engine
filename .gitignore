@@ -165,3 +165,8 @@ result.*
 Pipfile.lock
 
 result.*
+
+examples/sample.*
+examples/result.*
+
+requirements.txt
