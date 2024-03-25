@@ -163,3 +163,10 @@ main.py
 notes.txt
 result.*
 Pipfile.lock
+
+result.*
+
+examples/sample.*
+examples/result.*
+
+requirements.txt
