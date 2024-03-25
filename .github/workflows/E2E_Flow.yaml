@@ -47,6 +47,7 @@ jobs:
 
       - name: E2E Flow
         run: |
+          pip install -e .
           cd examples
           python -m pip install requests
           python examples.py
