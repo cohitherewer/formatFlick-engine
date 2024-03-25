@@ -36,7 +36,7 @@ def example_1():
     create_sample_json_file()
     # convert from json file to csv file
     # initiate the formatflick
-    print("Initiating formatflick")
+    print("Initiating formatflick for JSON")
     core = formatflick(source="sample.json",
                        destination=None,  # change to unset the default file name "result"
                        destination_extension=".csv",  # set if you dont destination is None
@@ -66,10 +66,26 @@ def example_2():
     This function initiates the formatflick and converts from csv to json
     """
     create_sample_csv()
-    print("Initiating formatflick")
+    print("Initiating formatflick for CSV")
     core = formatflick(source="sample.csv",
                        destination=None,  # change to unset the default file name "result"
                        destination_extension=".json",  # set if you dont destination is None
+                       verbosity=2,  # has no effect till now
+                       mode='file'  # by default set to 'file
+                       )
+    print("Converting...")
+    core.convert()
+    print("Conversion Done...")
+
+
+def example_3():
+    create_sample_json_file()
+    # convert from json file to csv file
+    # initiate the formatflick
+    print("Initiating formatflick for JSON")
+    core = formatflick(source="sample.json",
+                       destination=None,  # change to unset the default file name "result"
+                       destination_extension=".xml",  # set if you dont destination is None
                        verbosity=2,  # has no effect till now
                        mode='file'  # by default set to 'file
                        )
@@ -89,16 +105,20 @@ def remove_files():
 if __name__ == "__main__":
     try:
         print("E2E TEST 1:")
-        print("-" * 20)
+        print("-" * 50)
         example_1()
-        print("-" * 20)
+        print("-" * 50)
         print("\nE2E TEST 2:")
-        print("-" * 20)
+        print("-" * 50)
         example_2()
-        print("-" * 20)
+        print("-" * 50)
+        print("\nE2E Test 3:")
+        print("-" * 50)
+        example_3()
+        print("-" * 50)
 
-        print("Cleaning up the files...")
+        print("\nCleaning up the files...")
         remove_files()  # occasanly run this function to delete all the junk files
         print("Cleaning Done...Ending...")
     except Exception as err:
-        print(f"Some Unknown Error Occured: {err}")
+        print(f"Some Unknown Error Occurred: {err}")

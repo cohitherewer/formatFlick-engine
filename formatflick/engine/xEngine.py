@@ -58,5 +58,8 @@ class dest_xEngine(dest_engine):
         super().__init__(obj, destination, *args, **kwargs)
 
     def to_destination(self):
-        with open(self.destination, "w") as dest:
+        write_type = "w"
+        if type(self.obj) is bytes:
+            write_type = "wb"
+        with open(self.destination, write_type) as dest:
             dest.write(self.obj)
