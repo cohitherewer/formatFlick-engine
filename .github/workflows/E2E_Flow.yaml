@@ -46,8 +46,8 @@ jobs:
         run: pytest
 
       - name: E2E Flow
-        WORKDIR: ./examples
         run: |
+          cd examples
           python -m pip install requests
           python examples.py
           
