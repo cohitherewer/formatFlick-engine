@@ -1,8 +1,8 @@
 import json
 from formatflick.formatflick import *
 import requests
-import pandas as pd
-import csv
+import os
+import glob
 
 """
 This example has been created to demonstrate how we can convert a json file into csv file
@@ -14,16 +14,19 @@ the second function demonstrate the usage of the formatflick module
 
 
 def create_sample_json_file():
-    # call the api
+    # call the api for json object
+    print("Call API for JSON object")
     value = requests.get("http://universities.hipolabs.com/search?country=United+States")
     print(f"Status Code: {value.status_code}")
 
     if value.status_code != 200:
-        raise Exception("Some problem with the API call. Check the API")
+        raise Exception("Some problem with the JSON API call. Check the JSON API")
 
     # create the json file
+    print("Creating the JSON file...")
     with open("sample.json", "w") as file:
         json.dump(value.json(), file, indent=4)
+    print("JSON file creation done...")
 
 
 def example_1():
@@ -46,11 +49,16 @@ def example_1():
 
 
 def create_sample_csv():
+    print("Call API for CSV file")
     url = 'https://www1.ncdc.noaa.gov/pub/data/cdo/samples/PRECIP_HLY_sample_csv.csv'
     ret = requests.get(url)
     print(f"Status Code: {ret.status_code}")
+    if ret.status_code != 200:
+        raise Exception("Some problem with CSV API call. Check the CSV API")
+    print("Creating the csv file...")
     with open("sample.csv", "wb") as file:
         file.write(ret.content)
+    print("CSV file creation done...")
 
 
 def example_2():
@@ -71,8 +79,6 @@ def example_2():
 
 
 def remove_files():
-    import os
-    import glob
     for item in [".csv", ".json", "xml"]:
         csv_files = glob.glob(f"*{item}")
         for file in csv_files:
@@ -81,6 +87,18 @@ def remove_files():
 
 
 if __name__ == "__main__":
-    # example_2()
+    try:
+        print("E2E TEST 1:")
+        print("-" * 20)
+        example_1()
+        print("-" * 20)
+        print("\nE2E TEST 2:")
+        print("-" * 20)
+        example_2()
+        print("-" * 20)
 
-    remove_files() # occasanly run this function to delete all the junk files
+        print("Cleaning up the files...")
+        remove_files()  # occasanly run this function to delete all the junk files
+        print("Cleaning Done...Ending...")
+    except Exception as err:
+        print(f"Some Unknown Error Occured: {err}")
